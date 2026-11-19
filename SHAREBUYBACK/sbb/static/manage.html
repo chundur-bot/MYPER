@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage tickers · Share Buyback Insight</title>
+<script>try { if (localStorage.getItem("sbb-theme") === "dark") document.documentElement.dataset.theme = "dark"; } catch (e) { /* the page opens light */ }</script>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f0f0f0; --surface: #ffffff; --surface-2: #f5f5f5; --raise: #e8e8e8; --border: #d0d0d0; --border-strong: #b0b0b0; --field-border: #a0a0a0;
+    --ink: #000000; --ink-2: #3a3a3a; --muted: #5f5e5a; --accent: #1558a8; --on-accent: #ffffff; --link: #0a5fc2;
+    --hover: #dcecff; --stripe: #f6f9fd; --rule: #d3d1c7;
+    --good-ink: #176b3a; --good-soft: #def2e5; --warn-ink: #8a5a00; --warn-soft: #fff0d6; --bad: #b00000; --bad-soft: #fde8e7; --info-soft: #dcecff;
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #1b1d21; --surface: #25282d; --surface-2: #2b2f35; --raise: #33383f; --border: #454b54; --border-strong: #5a616c; --field-border: #6a727e;
+    --ink: #f0f2f5; --ink-2: #cdd2d9; --muted: #a0a7b1; --accent: #2b6fc4; --on-accent: #ffffff; --link: #7db7ff;
+    --hover: #2f4460; --stripe: #2a3038; --rule: #4a4f57;
+    --good-ink: #7fe0a8; --good-soft: #1e3a2a; --warn-ink: #f0c26a; --warn-soft: #3f3216; --bad: #ff7b72; --bad-soft: #44201f; --info-soft: #22364f;
+  }
+  :root[data-theme="dark"] .ex h2, :root[data-theme="dark"] .pill.blue { color: var(--link); }
+  :root[data-theme="dark"] :focus-visible { outline-color: var(--link); }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font: 13px/1.45 "Segoe UI", Arial, system-ui, sans-serif; min-height: 100vh; }
+  .num, .mono { font-family: Consolas, "Cascadia Mono", monospace; font-variant-numeric: tabular-nums; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  button, select, input { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 20px; background: var(--bg); border-bottom: 1px solid var(--border-strong); }
+  .logo { width: 30px; height: 30px; border-radius: 3px; display: grid; place-items: center; font: 700 12px Consolas, monospace; background: var(--accent); color: var(--on-accent); }
+  .top h1 { font-size: 16px; margin: 0; font-weight: 600; }
+  .top h1 span { color: var(--muted); font-weight: 400; }
+  .top .right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .ver { color: var(--muted); font-size: 12px; }
+
+  main { max-width: 1240px; margin: 0 auto; padding: 16px 20px 60px; }
+  .lead { color: var(--ink-2); margin: 0 0 12px; max-width: 900px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 5px 12px; border-radius: 3px; background: var(--raise); border: 1px solid var(--field-border); cursor: pointer; text-decoration: none !important; color: var(--ink); }
+  .btn:hover { background: var(--hover); }
+  .btn.sm { min-height: 26px; padding: 2px 9px; font-size: 12px; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .btn.danger { color: var(--bad); border-color: var(--bad); background: var(--surface); }
+  .btn.danger:hover { background: var(--bad-soft); }
+  .btn.danger.solid { background: var(--bad); color: #fff; }
+  .btn.danger.solid:hover { background: #8d0000; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border-strong); border-radius: 3px; padding: 10px 14px; }
+  .kpi .v { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .kpi .l { color: var(--muted); font-size: 12px; }
+
+  .bar { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 3px; padding: 10px 14px; margin-bottom: 14px; }
+  .bar input[type=search], .bar select { min-height: 32px; padding: 4px 9px; border: 1px solid var(--field-border); border-radius: 3px; background: var(--surface); }
+  .bar input[type=search] { width: 280px; max-width: 100%; }
+  .bar label { display: inline-flex; align-items: center; gap: 6px; }
+  .bar .count { margin-left: auto; color: var(--muted); }
+
+  .note { border: 1px solid var(--border-strong); border-left: 4px solid var(--accent); background: var(--info-soft); padding: 9px 12px; border-radius: 3px; margin-bottom: 14px; }
+  .note.ok { border-left-color: var(--good-ink); background: var(--good-soft); }
+  .note.bad { border-left-color: var(--bad); background: var(--bad-soft); }
+  .note b { font-weight: 600; }
+
+  .ex { background: var(--surface); border: 1px solid var(--border-strong); border-radius: 3px; margin-bottom: 14px; }
+  .ex > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+  .ex > summary::-webkit-details-marker { display: none; }
+  .ex > summary::before { content: "▸"; color: var(--muted); width: 12px; }
+  .ex[open] > summary::before { content: "▾"; }
+  .ex:not([open]) > summary { border-bottom: 0; }
+  .ex h2 { font-size: 15px; margin: 0; color: var(--accent); font-weight: 700; }
+  .ex .sub { color: var(--muted); }
+  .ex .tot { margin-left: auto; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .twrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 6px 10px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--border); }
+  th { background: var(--surface-2); font-weight: 600; color: var(--ink-2); position: sticky; top: 0; cursor: pointer; user-select: none; }
+  th.n, td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  th[aria-sort=ascending]::after { content: " ▲"; font-size: 10px; }
+  th[aria-sort=descending]::after { content: " ▼"; font-size: 10px; }
+  tbody tr:nth-child(even) { background: var(--stripe); }
+  tbody tr:hover { background: var(--hover); }
+  td.co { white-space: normal; min-width: 180px; max-width: 320px; }
+  td.zero { color: var(--muted); }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px; background: var(--raise); color: var(--ink-2); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn-ink); }
+  .pill.blue { background: var(--info-soft); color: var(--accent); }
+  .empty { padding: 14px; color: var(--muted); }
+  .muted { color: var(--muted); }
+  .small { font-size: 12px; }
+
+  dialog { border: 1px solid var(--border-strong); border-radius: 4px; padding: 0; width: min(560px, calc(100vw - 32px)); box-shadow: 0 8px 28px rgba(0,0,0,.28); color: var(--ink); }
+  dialog::backdrop { background: rgba(0,0,0,.35); }
+  .dlg-head { padding: 12px 16px; border-bottom: 1px solid var(--rule); font-size: 15px; font-weight: 700; color: var(--bad); }
+  .dlg-body { padding: 14px 16px; }
+  .dlg-body ul { margin: 8px 0 12px; padding-left: 20px; }
+  .dlg-body li { margin: 2px 0; }
+  .dlg-body .field { margin-top: 12px; }
+  .dlg-body .field label { display: block; margin-bottom: 4px; }
+  .dlg-body input[type=text] { width: 180px; min-height: 32px; padding: 4px 9px; border: 1px solid var(--field-border); border-radius: 3px; text-transform: uppercase; }
+  .dlg-body .check { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; }
+  .dlg-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--rule); background: var(--surface-2); }
+
+  @media (max-width: 720px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .bar .count { margin-left: 0; } main { padding: 12px 12px 40px; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="logo" aria-hidden="true">SB</span>
+  <h1>Share Buyback Insight <span>· Manage tickers</span></h1>
+  <div class="right"><span class="ver" id="ver"></span><button class="btn" id="refresh">Refresh</button><a class="btn" href="/">Back to the app</a></div>
+</header>
+<main>
+  <p class="lead">Every exchange in the database with its tickers and what is held for each. <b>Delete</b> takes one ticker out of one exchange, with its filings and every figure read from them. A backup copy of the database is made first.</p>
+  <div id="msg" role="status" aria-live="polite"></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="bar">
+    <label for="find" class="muted">Find</label><input type="search" id="find" placeholder="Code or company name" autocomplete="off">
+    <label for="exch" class="muted">Exchange</label><select id="exch"><option value="">All exchanges</option></select>
+    <label><input type="checkbox" id="all"> Show tickers with nothing held</label>
+    <span class="count" id="count"></span>
+  </div>
+  <div id="list"><p class="empty">Loading…</p></div>
+</main>
+
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <form method="dialog" id="dlgForm">
+    <div class="dlg-head" id="dlgTitle"></div>
+    <div class="dlg-body">
+      <div id="dlgWhat"></div>
+      <label class="check"><input type="checkbox" id="dlgForget"><span>Also forget its links, so they can be read again later.<br><span class="muted small">Left unticked, the links are remembered as removed and a list read again does not bring them back.</span></span></label>
+      <div class="field"><label for="dlgType" id="dlgAsk"></label><input type="text" id="dlgType" autocomplete="off" spellcheck="false"></div>
+    </div>
+    <div class="dlg-foot"><button class="btn" type="button" id="dlgCancel">Cancel</button><button class="btn danger solid" type="submit" id="dlgGo" disabled>Delete</button></div>
+  </form>
+</dialog>
+
+<script>
+"use strict";
+const $ = (s) => document.querySelector(s);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const int = (v) => Number(v || 0).toLocaleString("en-US");
+const usDate = (s) => s ? String(s).replace(/^(\d{4})-(\d{2})-(\d{2}).*$/, "$2/$3/$1") : "";
+const plural = (n, one, many) => `${int(n)} ${n === 1 ? one : many}`;
+const S = { data: null, sort: { key: "ticker", dir: 1 }, target: null };
+const COLS = [
+  { key: "ticker", label: "Code" }, { key: "company", label: "Company" }, { key: "filings", label: "Filings", num: true }, { key: "programmes", label: "Programmes", num: true },
+  { key: "purchases", label: "Purchases", num: true }, { key: "first", label: "First filing" }, { key: "last", label: "Latest filing" }, { key: "review", label: "To review", num: true }, { key: "listed", label: "On the list as" },
+];
+const held = (t) => t.filings || t.programmes || t.purchases;
+const canDelete = (t) => held(t) || t.listed !== "Index list";  // an index-list name with nothing held has nothing to delete
+
+function say(kind, html) { $("#msg").innerHTML = html ? `<div class="note ${kind}">${html}</div>` : ""; }
+
+async function load() {
+  try {
+    const r = await fetch("/api/manage/tickers");
+    const j = await r.json();
+    if (!r.ok || j.error) throw new Error(j.error || r.statusText);
+    S.data = j;
+    $("#ver").textContent = "Version " + j.version;
+    const keep = $("#exch").value;
+    $("#exch").innerHTML = `<option value="">All exchanges</option>` + j.exchanges.map((e) => `<option value="${esc(e.code)}">${esc(e.exchange || e.name)} (${esc(e.code)})</option>`).join("");
+    $("#exch").value = keep;
+    draw();
+  } catch (x) {
+    $("#list").innerHTML = "";
+    say("bad", `<b>The list could not be loaded.</b> ${esc(x.message)}. Check that the app is running, then press Refresh.`);
+  }
+}
+
+function draw() {
+  const d = S.data; if (!d) return;
+  const all = d.exchanges.flatMap((e) => e.tickers);
+  $("#kpis").innerHTML = [[d.exchanges.length, "Exchanges"], [all.filter(held).length, "Tickers with data"], [all.reduce((n, t) => n + t.filings, 0), "Filings"], [all.reduce((n, t) => n + t.purchases, 0), "Purchases"]]
+    .map(([v, l]) => `<div class="kpi"><div class="v">${int(v)}</div><div class="l">${l}</div></div>`).join("");
+  const q = $("#find").value.trim().toLowerCase(), only = $("#exch").value, everything = $("#all").checked;
+  const { key, dir } = S.sort, num = COLS.find((c) => c.key === key).num;
+  let shown = 0;
+  $("#list").innerHTML = d.exchanges.filter((e) => !only || e.code === only).map((e) => {
+    const withData = e.tickers.filter(held);
+    const rows = e.tickers.filter((t) => (everything || held(t)) && (!q || t.ticker.toLowerCase().includes(q) || t.company.toLowerCase().includes(q)))
+      .sort((a, b) => dir * (num ? (a[key] || 0) - (b[key] || 0) : String(a[key] ?? "").localeCompare(String(b[key] ?? ""))) || a.ticker.localeCompare(b.ticker));
+    shown += rows.length;
+    const body = rows.length ? `<div class="twrap"><table><thead><tr>${COLS.map((c) => `<th scope="col" class="${c.num ? "n" : ""}" data-sort="${c.key}" ${c.key === key ? `aria-sort="${dir > 0 ? "ascending" : "descending"}"` : ""}>${c.label}</th>`).join("")}<th scope="col"><span class="muted">Action</span></th></tr></thead><tbody>${rows.map((t) => `<tr>
+        <td class="mono"><b>${esc(t.ticker)}</b></td><td class="co">${esc(t.company)}</td>
+        <td class="n ${t.filings ? "" : "zero"}">${int(t.filings)}</td><td class="n ${t.programmes ? "" : "zero"}">${int(t.programmes)}</td><td class="n ${t.purchases ? "" : "zero"}">${int(t.purchases)}</td>
+        <td class="mono">${usDate(t.first)}</td><td class="mono">${usDate(t.last)}</td>
+        <td class="n">${t.review ? `<span class="pill warn">${int(t.review)}</span>` : `<span class="zero">0</span>`}</td>
+        <td><span class="pill ${t.listed === "Filings only" ? "" : "blue"}">${esc(t.listed)}</span></td>
+        <td>${canDelete(t) ? `<button class="btn sm danger" data-del="${esc(e.code)}|${esc(t.ticker)}" aria-label="Delete ${esc(t.ticker)} from ${esc(e.exchange || e.name)}">Delete</button>` : `<span class="muted small">Nothing held</span>`}</td></tr>`).join("")}</tbody></table></div>`
+      : `<p class="empty">${e.tickers.length && (q || !everything) ? (q ? "No ticker here matches what you typed." : "Nothing is held for this exchange yet. Tick “Show tickers with nothing held” to see its company list.") : "No tickers on this exchange yet."}</p>`;
+    return `<details class="ex" open><summary><h2>${esc(e.flag)} ${esc(e.exchange || e.name)}</h2><span class="sub">${esc(e.name)} · ${esc(e.code)}${e.index ? " · " + esc(e.index) : ""} · ${esc(e.currency)}</span>
+      <span class="tot">${plural(withData.length, "ticker", "tickers")} with data · ${plural(withData.reduce((n, t) => n + t.filings, 0), "filing", "filings")}${e.no_company ? ` · <span class="pill warn" title="Filings with no company chosen. Choose the company on Quality in the app.">${int(e.no_company)} with no company</span>` : ""}</span></summary>${body}</details>`;
+  }).join("") || `<p class="empty">No exchanges are set up.</p>`;
+  $("#count").textContent = `${plural(shown, "ticker", "tickers")} shown`;
+}
+
+function ask(country, ticker) {
+  const e = S.data.exchanges.find((x) => x.code === country), t = e && e.tickers.find((x) => x.ticker === ticker);
+  if (!t) return;
+  S.target = { country, ticker };
+  $("#dlgTitle").textContent = `Delete ${ticker} from ${e.exchange || e.name}?`;
+  const after = t.listed === "Index list" ? `${esc(ticker)} stays on the ${esc(e.index || "index")} company list, with nothing held for it.` : t.listed === "Study list" ? `${esc(ticker)} is also taken off your study list.` : `${esc(ticker)} leaves the company list.`;
+  $("#dlgWhat").innerHTML = `<div><b>${esc(t.company || ticker)}</b> <span class="muted">(${esc(country)})</span></div>
+    <ul><li>${plural(t.filings, "filing", "filings")}${t.first ? `, ${usDate(t.first)} to ${usDate(t.last)}` : ""}</li><li>${plural(t.programmes, "programme", "programmes")}</li><li>${plural(t.purchases, "purchase", "purchases")}, with their running totals and source text</li>${t.review ? `<li>${plural(t.review, "item", "items")} to review</li>` : ""}</ul>
+    <div>${after} Other exchanges and other tickers are not touched.</div>
+    ${t.file_filings ? `<div class="note" style="margin:10px 0 0"><b>${plural(t.file_filings, "of these is", "of these are")} a file or typed entry in the inbox folder.</b> It is read again when the app restarts unless you also remove it from that folder.</div>` : ""}
+    <div class="muted small" style="margin-top:8px">A backup copy of the database is saved in the <span class="mono">backups</span> folder before anything is deleted.</div>`;
+  $("#dlgAsk").innerHTML = `Type <b class="mono">${esc(ticker)}</b> to confirm`;
+  $("#dlgType").value = ""; $("#dlgForget").checked = false; $("#dlgGo").disabled = true; $("#dlgGo").textContent = `Delete ${ticker}`;
+  $("#dlg").showModal(); $("#dlgType").focus();
+}
+
+$("#dlgType").oninput = (e) => { $("#dlgGo").disabled = !S.target || e.target.value.trim().toUpperCase() !== S.target.ticker; };
+$("#dlgCancel").onclick = () => $("#dlg").close();
+$("#dlgForm").onsubmit = async (e) => {
+  e.preventDefault();
+  const t = S.target; if (!t || $("#dlgGo").disabled) return;
+  $("#dlgGo").disabled = true; $("#dlgGo").textContent = "Deleting…";
+  try {
+    const r = await fetch("/api/manage/delete", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ country: t.country, ticker: t.ticker, confirm: $("#dlgType").value.trim().toUpperCase(), forget_links: $("#dlgForget").checked }) });
+    const j = await r.json();
+    if (!r.ok || j.error) throw new Error(j.error || r.statusText);
+    $("#dlg").close();
+    say("ok", `<b>${esc(j.ticker)} was deleted from ${esc(j.country)}:</b> ${plural(j.filings, "filing", "filings")}, ${plural(j.programmes, "programme", "programmes")} and ${plural(j.purchases, "purchase", "purchases")}. Its links are ${j.links === "forgotten" ? "forgotten, so they can be read again" : "remembered as removed"}.${j.still_listed ? ` ${esc(j.ticker)} is still on the index company list.` : ""}${j.files_left ? ` ${plural(j.files_left, "file or typed entry remains", "files or typed entries remain")} in the inbox folder.` : ""}<br><span class="small">Backup made first: <span class="mono">backups\\${esc(j.backup)}</span>. To undo, close the app and copy that file over <span class="mono">buyback.db</span>.</span>`);
+    await load(); window.scrollTo({ top: 0 });
+  } catch (x) {
+    $("#dlg").close();
+    say("bad", `<b>${esc(t.ticker)} was not deleted.</b> ${esc(x.message)}`);
+    window.scrollTo({ top: 0 });
+  }
+};
+document.addEventListener("click", (e) => {
+  const del = e.target.closest("[data-del]");
+  if (del) { const [c, t] = del.dataset.del.split("|"); return ask(c, t); }
+  const th = e.target.closest("th[data-sort]");
+  if (th) { const k = th.dataset.sort; S.sort = { key: k, dir: S.sort.key === k ? -S.sort.dir : (COLS.find((c) => c.key === k).num ? -1 : 1) }; draw(); }
+});
+$("#find").oninput = draw; $("#exch").onchange = draw; $("#all").onchange = draw;
+$("#refresh").onclick = () => { say("", ""); load(); };
+load();
+</script>
+</body>
+</html>

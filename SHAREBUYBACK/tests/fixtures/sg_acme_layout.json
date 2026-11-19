@@ -1,0 +1,92 @@
+{
+ "id": "sg_acme_notice",
+ "name": "Acme repurchase notice",
+ "market": "SG",
+ "status": "approved",
+ "made": "hand",
+ "about": "A made-up notice used by tests/test_app.py. Not a real form.",
+ "sample_link": "",
+ "sample_ticker": "ACM",
+ "form": "sg_acme_notice",
+ "doc_type": "transaction",
+ "identify": [
+  "^[ \\t]*Notice\\s+of\\s+Share\\s+Repurchase",
+  "^[ \\t]*Trading\\s+date",
+  "^[ \\t]*Number\\s+of\\s+shares\\s+repurchased",
+  "^[ \\t]*Aggregate\\s+consideration\\s+paid"
+ ],
+ "fields": {
+  "issuer": {
+   "label": "^[ \\t]*Company[ \\t]*:",
+   "take": "line",
+   "type": "text"
+  },
+  "filing_date": {
+   "label": "^[ \\t]*Date\\s+of\\s+announcement",
+   "take": "line",
+   "type": "date"
+  },
+  "purchase_date": {
+   "label": "^[ \\t]*Trading\\s+date",
+   "take": "line",
+   "type": "date"
+  },
+  "shares": {
+   "label": "^[ \\t]*Number\\s+of\\s+shares\\s+repurchased",
+   "take": "line",
+   "type": "number"
+  },
+  "high": {
+   "label": "^[ \\t]*Highest\\s+price\\s+paid\\s+per\\s+share",
+   "take": "line",
+   "type": "money"
+  },
+  "paid": {
+   "label": "^[ \\t]*Aggregate\\s+consideration\\s+paid",
+   "take": "next",
+   "type": "money"
+  },
+  "cum_shares": {
+   "label": "^[ \\t]*Number\\s+of\\s+shares\\s+repurchased",
+   "take": "line",
+   "type": "number",
+   "after": "^[ \\t]*Summary\\s+of\\s+repurchases\\s+to\\s+date"
+  },
+  "issued_after": {
+   "label": "^[ \\t]*Issued\\s+shares\\s+after\\s+repurchase",
+   "take": "line",
+   "type": "number"
+  },
+  "low": {
+   "label": "^[ \\t]*Lowest\\s+price\\s+paid\\s+per\\s+share",
+   "take": "line",
+   "type": "money"
+  }
+ },
+ "required": [
+  "purchase_date",
+  "shares"
+ ],
+ "map": {
+  "company": {
+   "name": "issuer"
+  },
+  "filing_date": "filing_date",
+  "as_of": "purchase_date",
+  "purchases": [
+   {
+    "venue": "",
+    "date": "purchase_date",
+    "shares": "shares",
+    "high": "high",
+    "low": "low",
+    "paid": "paid"
+   }
+  ],
+  "shares_on_issue": "issued_after",
+  "running_total": {
+   "shares": "cum_shares"
+  }
+ },
+ "title": "^[ \\t]*Notice\\s+of\\s+Share\\s+Repurchase"
+}

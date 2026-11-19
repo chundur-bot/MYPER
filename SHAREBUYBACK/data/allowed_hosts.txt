@@ -1,0 +1,3 @@
+# Company systems filings may be read from, one exact host name per line.
+# Exchange sites are always refused, even if listed here.
+ffdocproxy.prod.factset.com

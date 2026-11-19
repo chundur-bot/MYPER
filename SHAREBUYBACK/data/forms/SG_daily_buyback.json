@@ -1,0 +1,70 @@
+{
+  "id": "sgx_daily",
+  "name": "SGX Daily Share Buy-Back Notice",
+  "market": "SG",
+  "status": "approved",
+  "about": "The fixed form every SGX-listed company files after a day's buying. Figures come from the form's fields, never from its free-text description. Approved 2026-11-10 against the Singtel, Hong Fok and Sarine notices in tests/fixtures.",
+  "form": "sgx_daily",
+  "doc_type": "transaction",
+  "identify": ["Share Buy Back - Daily Share Buy-Back Notice", "^Section A", "^Date of Purchase", "^Section D"],
+  "ignore": ["^SHARE BUY BACK - DAILY SHARE BUY-BACK NOTICE::[^\\n]*(?:\\n[A-Z0-9][A-Z0-9 $.,&'/-]*$)?", "^https://links\\.sgx\\.com[^\\n]*$", "^Page \\d+ of \\d+\\s*$"],
+  "fields": {
+    "issuer":            {"label": "^Issuer/\\s*Manager", "take": "next", "type": "text"},
+    "security":          {"label": "^Securities$", "take": "next", "type": "text"},
+    "broadcast":         {"label": "^Date\\s*&\\s*Time of Broadcast", "take": "next", "type": "date"},
+    "subtitle":          {"label": "^Announcement Sub Title", "take": "next", "type": "text"},
+    "description":       {"label": "^Description \\(Please provide[^\\n]*", "take": "block", "until": "^Additional Details", "type": "text"},
+    "mandate_start":     {"label": "^Start date for mandate of daily share buy-back", "take": "block", "until": "^Section A", "type": "date"},
+    "overseas_exchange": {"label": "^Name of Overseas exchange where company has dual listing", "take": "next", "type": "text", "not": "^Maximum number|^Purchase made"},
+    "max_shares":        {"label": "^Maximum number of shares authorised for purchase", "take": "next", "type": "number"},
+    "purchase_date":     {"label": "^Date of Purchase", "take": "line", "type": "date", "column": 0},
+    "purchase_date_2":   {"label": "^Date of Purchase", "take": "line", "type": "date", "column": 1},
+    "shares":            {"label": "^Total Number of shares purchased", "take": "line", "type": "number", "column": 0},
+    "shares_2":          {"label": "^Total Number of shares purchased", "take": "line", "type": "number", "column": 1},
+    "cancelled":         {"label": "^Number of shares cancelled", "take": "line", "type": "number", "column": 0},
+    "cancelled_2":       {"label": "^Number of shares cancelled", "take": "line", "type": "number", "column": 1},
+    "treasury":          {"label": "^Number of shares held as treasury shares", "take": "line", "type": "number", "column": 0},
+    "treasury_2":        {"label": "^Number of shares held as treasury shares", "take": "line", "type": "number", "column": 1},
+    "high":              {"label": "^Highest Price per share", "take": "line", "type": "money", "column": 0},
+    "high_2":            {"label": "^Highest Price per share", "take": "line", "type": "money", "column": 1},
+    "low":               {"label": "^Lowest Price per share", "take": "line", "type": "money", "column": 0},
+    "low_2":             {"label": "^Lowest Price per share", "take": "line", "type": "money", "column": 1},
+    "paid":              {"label": "^Total Consideration", "take": "block", "until": "^Section B", "type": "money", "column": 0},
+    "paid_2":            {"label": "^Total Consideration", "take": "block", "until": "^Section B", "type": "money", "column": 1},
+    "off_market":        {"label": "^Purchase made by way of off-market acquisition on equal access scheme", "take": "next", "type": "text"},
+    "cum_market":        {"label": "^By way of Market Acquisition", "after": "^Section C", "take": "line", "type": "number", "column": 0},
+    "cum_off_market":    {"label": "^By way off? Market Acquisition on equal access scheme", "after": "^Section C", "take": "line", "type": "number", "column": 0},
+    "cum_total":         {"label": "^Total(?=\\s+\\d)", "after": "^Section C", "take": "line", "type": "number", "column": 0},
+    "cum_percent":       {"label": "^Total(?=\\s+\\d)", "after": "^Section C", "take": "line", "type": "number", "column": 1},
+    "issued_after":      {"label": "^Number of issued shares excluding treasury shares after purchase", "take": "next", "type": "number"},
+    "treasury_after":    {"label": "^Number of treasury shares held after purchase", "take": "next", "type": "number"}
+  },
+  "required": ["issuer", "purchase_date", "shares"],
+  "checks": [
+    {"sum": ["cum_market", "cum_off_market"], "equals": "cum_total", "drop": ["cum_total", "cum_market", "cum_off_market", "cum_percent"], "kind": "TOTAL_MISMATCH",
+     "say": "Section C doesn't add up: market and off-market purchases come to {sum:,.0f}, but the form's total says {target:,.0f}. No running total was kept from this filing. Please check it."},
+    {"sum": ["cancelled", "treasury"], "equals": "shares", "kind": "TREATMENT_MISMATCH",
+     "say": "Shares cancelled plus shares held as treasury come to {sum:,.0f}, but {target:,.0f} were purchased. Please check it."}
+  ],
+  "flags": [
+    {"field": "off_market", "matches": "^\\s*yes", "kind": "OFF_MARKET", "say": "This notice reports an off-market purchase on an equal access scheme (Section B), which this layout doesn't read. Please enter it by hand."}
+  ],
+  "map": {
+    "company": {"name": "issuer", "security": "security", "pattern": "^(?P<name>.+?)\\s+-\\s+(?P<isin>[A-Z]{2}[A-Z0-9]{9}\\d)\\s+-\\s+(?P<ticker>[A-Z0-9]{1,8})$"},
+    "filing_date": "broadcast",
+    "as_of": "purchase_date",
+    "purchases": [
+      {"venue": "", "date": "purchase_date", "shares": "shares", "high": "high", "low": "low", "paid": "paid"},
+      {"venue_from": "overseas_exchange", "date": "purchase_date_2", "shares": "shares_2", "high": "high_2", "low": "low_2", "paid": "paid_2"}
+    ],
+    "cancelled": [{"venue": "", "shares": "cancelled"}, {"venue_from": "overseas_exchange", "shares": "cancelled_2"}],
+    "treasury": [{"venue": "", "shares": "treasury"}, {"venue_from": "overseas_exchange", "shares": "treasury_2"}],
+    "treasury_held": "treasury_after",
+    "shares_on_issue": "issued_after",
+    "programme": {
+      "size_from": ["subtitle", "description"],
+      "mandate": {"start": "mandate_start", "max_shares": "max_shares", "type": "On-market, under shareholder mandate"}
+    },
+    "running_total": {"shares": "cum_total", "percent": "cum_percent", "counted_from": "mandate"}
+  }
+}

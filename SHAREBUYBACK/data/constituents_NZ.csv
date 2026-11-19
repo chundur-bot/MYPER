@@ -1,0 +1,51 @@
+ticker,company,sector,as_of,source
+AIA,Auckland International Airport Limited,Airport Services,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+AIR,Air New Zealand Limited,Airlines,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+ANZ,ANZ Group Holdings Limited,Diversified Banks,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+ARG,Argosy Property Limited,Diversified REITs,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+ATM,The a2 Milk Company Limited,Packaged Foods & Meats,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+BGP,Briscoe Group Limited,Specialty Stores,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+CEN,Contact Energy Limited,Electric Utilities,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+CHI,Channel Infrastructure NZ Limited,Oil and Gas Refining,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+CNU,Chorus Limited,Alternative Carriers,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+EBO,Ebos Group Limited,Health Care Distributors,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+FBU,Fletcher Building Limited,Construction Materials,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+FPH,Fisher & Paykel Healthcare Corporation Limited,Health Care Equipment & Services,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+FRW,Freightways Group Limited,Air Freight & Logistics,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+FSF,Fonterra Shareholders' Fund,Packaged Foods & Meats,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+GNE,Genesis Energy Limited,Electric Utilities,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+GNZ,Goodman NZ Ltd & Goodman Property Services Ltd,Diversified REITs,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+GTK,Gentrack Group Limited,Application Software,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+HGH,Heartland Group Holdings Limited,Diversified Banks,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+HLG,Hallenstein Glasson Holdings Limited,Consumer Cyclical,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+IFT,Infratil Limited,Electric Utilities,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+IPL,Investore Property Limited,Retail REITs,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+KMD,KMD Brands Limited,Specialty Stores,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+KPG,Kiwi Property Group Limited,Retail REITs,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+MCY,Mercury NZ Limited,Electric Utilities,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+MEL,Meridian Energy Limited,Renewable Electricity,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+MFT,Mainfreight Limited,Air Freight & Logistics,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+NPH,Napier Port Holdings Limited,Marine Ports & Services,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+NZX,NZX Limited,Financial Exchanges & Data,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+OCA,Oceania Healthcare Limited,Health Care Facilities,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+PCT,Precinct Properties NZ & Precinct Properties Investments Ltd,Office REITs,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+PFI,Property for Industry Limited,Industrial REITs,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+POT,Port of Tauranga Limited,Marine Ports & Services,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+RYM,Ryman Healthcare Limited,Health Care Facilities,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+SAN,Sanford Limited,Packaged Foods & Meats,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+SCL,Scales Corporation Limited,Packaged Foods & Meats,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+SKC,SkyCity Entertainment Group Limited,Casinos & Gaming,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+SKL,Skellerup Holdings Limited,Industrial Machinery,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+SKO,Serko Limited,Application Software,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+SKT,Sky Network Television Limited,Cable & Satellite,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+SPG,Stride Property Ltd & Stride Investment Management Ltd,Diversified REITs,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+SPK,Spark New Zealand Limited,Integrated Telecommunication Services,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+SUM,Summerset Group Holdings Limited,Health Care Facilities,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+THL,Tourism Holdings Limited,Tourism,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+TRA,Turners Automotive Group Limited,Automotive,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+TWR,Tower Limited,Property & Casualty Insurance,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+VCT,Vector Limited,Multi-Utilities,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+VGL,Vista Group International Limited,Application Software,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+VHP,Vital Healthcare Property Trust,Health Care REITs,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+VSL,Vulcan Steel Limited,Metals & Mining,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index
+WBC,Westpac Banking Corporation,Diversified Banks,2026-10-01,https://en.wikipedia.org/wiki/NZX_50_Index

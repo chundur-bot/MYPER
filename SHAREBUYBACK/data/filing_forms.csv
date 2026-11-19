@@ -1,0 +1,27 @@
+form,doc_type,appendix,filing_type
+appendix_3c,programme,Appendix 3C,New buy-back announcement
+appendix_3c,update,Appendix 3C,Update
+appendix_3c,daily,Appendix 3C,Daily buy-back notification
+appendix_3c,final,Appendix 3C,Final buy-back notification
+appendix_3c,unknown,Appendix 3C,Not identified
+appendix_3h,cessation,Appendix 3H,Cessation of securities
+notice,transaction,None (company notice),Purchase notice
+notice,programme,None (company notice),Programme announcement
+capital_change,transaction,None (company notice),Capital change
+sgx_daily,transaction,SGX Daily Share Buy-Back Notice,Daily buy-back notice
+,transactions csv,None (your file),Purchases from your file
+,programmes csv,None (your file),Programmes from your file
+,announcement list,None (your file),Announcement list
+notice,update,None (company notice),Programme update
+hkex_ndr,transaction,Next Day Disclosure Return (FF305),Daily buy-back return
+hkex_daily,transaction,Share Repurchase Report,Daily report (every company)
+hkex_monthly,transaction,Monthly Return (FF301),Monthly return
+manual,programme,Entered by hand,Programme announcement
+manual,update,Entered by hand,Change of terms
+manual,transaction,Entered by hand,Purchase
+manual,final,Entered by hand,Completion with final totals
+manual,completion,Entered by hand,Completion
+appendix_3d,update,Appendix 3D,Changes relating to buy-back
+appendix_3e,daily,Appendix 3E,Daily share buy-back notice
+appendix_3f,final,Appendix 3F,Final share buy-back notice
+appendix_3g,issue,Appendix 3G,Issue or transfer of securities

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f0f0f0">
+<title>Share Buyback Insight</title>
+<link rel="stylesheet" href="/static/app.css">
+<script>try { if (localStorage.getItem("sbb-theme") === "dark") document.documentElement.dataset.theme = "dark"; } catch (e) { /* the page opens light */ }</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-compare" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M8 17V9M13 17V5M18 17v-6"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+  <symbol id="i-layout" viewBox="0 0 24 24"><path d="M3 3h18v18H3zM3 9h18M9 21V9"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+</svg>
+
+<header class="top">
+  <a class="brand" href="/" aria-label="Share Buyback Insight home"><span class="logo">SB</span><span class="name">Share Buyback <b>Insight</b></span></a>
+  <div class="seg" role="tablist" aria-label="View mode">
+    <button role="tab" data-mode="dashboard">Dashboard</button>
+    <button role="tab" data-mode="analyst">Analyst</button>
+  </div>
+  <div class="period">
+    <label for="country" class="sr">Country</label>
+    <select id="country" aria-label="Country"></select>
+    <label for="ticker" class="sr">Ticker</label>
+    <select id="ticker" aria-label="Ticker"><option value="">All tickers</option></select>
+    <label for="month" class="sr">Period</label>
+    <select id="month" aria-label="Period"></select>
+    <span id="customDates" hidden><input type="date" id="pFrom" aria-label="From"><input type="date" id="pTo" aria-label="To"><button class="btn" id="applyCustom">Apply</button></span>
+  </div>
+  <div class="top-acts">
+    <span id="roBanner" class="ro-banner" hidden></span>
+    <a class="btn" href="/manage" target="_blank" rel="noopener" title="Exchanges and their tickers; delete a ticker and its filings">Manage tickers</a>
+    <button class="icon-btn" id="themeBtn" title="Switch to dark view" aria-label="Switch to dark view"><svg><use href="#i-sun"/></svg></button>
+    <button class="icon-btn" id="exportBtn" title="Excel report for this country and period" aria-label="Excel report for this country and period"><svg><use href="#i-download"/></svg></button>
+  </div>
+</header>
+
+<nav class="rail" id="rail" aria-label="Sections">
+  <button data-sec="home"><svg><use href="#i-home"/></svg><span>Home</span></button>
+  <button data-sec="companies"><svg><use href="#i-list"/></svg><span>Companies</span></button>
+  <button data-sec="announcements"><svg><use href="#i-doc"/></svg><span>Notices</span></button>
+  <button data-sec="analysis"><svg><use href="#i-compare"/></svg><span>Analysis</span></button>
+  <button data-sec="quality"><svg><use href="#i-check"/></svg><span>Quality</span></button>
+  <button data-sec="tracker"><svg><use href="#i-layout"/></svg><span>Tracker</span></button>
+  <button data-sec="collect"><svg><use href="#i-play"/></svg><span>Add data</span></button>
+  <button data-sec="library"><svg><use href="#i-book"/></svg><span>Library</span></button>
+</nav>
+
+<main id="main">
+  <div class="subtabs" id="subtabs" role="tablist"></div>
+  <div id="view" class="view"></div>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet" aria-label="Details"></aside>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Which notices to download" hidden></div>
+<div class="tip" id="tip" role="tooltip"></div>
+<div class="toast" id="toast" role="status"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

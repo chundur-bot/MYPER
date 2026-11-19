@@ -1,0 +1,61 @@
+Issuer & Securities
+Issuer/ Manager
+HONG FOK CORPORATION LIMITED
+Securities
+HONG FOK CORPORATION LTD - SG1J14885763 - H30
+Stapled Security
+No
+Announcement Details
+Announcement Title
+Share Buy Back - Daily Share Buy-Back Notice
+Date &Time of Broadcast
+10-Nov-2026 17:35:29
+Status
+New
+Announcement Sub Title
+Daily Share Buy-Back Notice
+Announcement Reference
+SG261110OTHR6JPK
+Submitted By (Co./ Ind. Name)
+LIM GUEK HONG/KOH CHAY TIANG
+Designation
+COMPANY SECRETARIES
+Description (Please provide a detailed description of the event in the box below)
+Share buy-back by way of market acquisition
+Additional Details
+Start date for mandate of daily share buy-back
+30/04/2026
+Section A
+Maximum number of shares authorised for purchase
+80,371,314
+Purchase made by way of market acquisition
+Yes
+SHARE BUY BACK - DAILY SHARE BUY-BACK NOTICE::DAILY SHARE BUY-BACK NOTICE
+
+Singapore Exchange Overseas Exchange
+Date of Purchase 10/11/2026
+Total Number of shares purchased 191,000
+Number of shares cancelled 0
+Number of shares held as treasury shares 191,000
+Highest/ Lowest price per share
+Highest Price per share SGD 0.935
+Lowest Price per share SGD 0.92
+Total Consideration (including stamp duties, clearing changes etc) paid or payable for the
+shares
+SGD
+177,138.06
+Section B
+Purchase made by way of off-market acquisition on equal access scheme
+No
+Section C
+Cumulative No. of shares purchased to date^ Number Percentage#
+By way of Market Acquisition 19,021,800 2.367
+By way off Market Acquisition on equal access scheme 0 0
+Total 19,021,800 2.367
+#Percentage of company's issued shares excluding treasury shares as at the date of the share buy-back resolution
+^From the date on which share buy-back mandate is obtained
+Section D
+Number of issued shares excluding treasury shares after purchase
+784,691,340
+Number of treasury shares held after purchase
+2,577,400

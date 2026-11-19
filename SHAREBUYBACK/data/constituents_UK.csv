@@ -1,0 +1,101 @@
+ticker,company,sector,as_of,source
+III,3i,Investment Banking and Brokerage Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+ABDN,Aberdeen Group,Investment Banking and Brokerage Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+ADM,Admiral Group,Non-life Insurance,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+AAF,Airtel Africa,Telecommunications Service Providers,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+ALW,Alliance Witan,Closed End Investments,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+AAL,Anglo American plc,Industrial Metals and Mining,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+ANTO,Antofagasta plc,Industrial Metals and Mining,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+ABF,Associated British Foods,Food Producers,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+AZN,AstraZeneca,"Pharmaceuticals, Biotechnology and Marijuana Producers",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+AUTO,Autotrader Group,Software and Computer Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+AV,Aviva,Life Insurance,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BAB,Babcock International,Aerospace and Defense,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BA,BAE Systems,Aerospace and Defense,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BBY,Balfour Beatty,Construction and Materials,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BARC,Barclays,Banks,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BTRW,Barratt Redrow,Household Goods and Home Construction,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BP,BP,Non-Renewable Energy,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BATS,British American Tobacco,Tobacco,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BLND,British Land,Real Estate Investment Trusts,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BT.A,BT Group,Telecommunications Service Providers,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BNZL,Bunzl,General Industrials,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BRBY,Burberry Group,Personal Goods,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+CNA,Centrica,"Gas, Water and Multi-utilities",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+CCEP,Coca-Cola Europacific Partners,Beverages,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+CCH,Coca-Cola HBC,Beverages,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+CPG,Compass Group,Consumer Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+CCC,Computacenter,Software and Computer Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+CTEC,Convatec,Medical Equipment and Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+CRDA,Croda International,Chemicals,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+DCC,DCC Energy,Industrial Support Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+DGE,Diageo,Beverages,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+DPLM,Diploma,Industrial Support Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+EZJ,EasyJet,Travel and Leisure,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+EDV,Endeavour Mining,Precious Metals and Mining,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+EXPN,Experian,Industrial Support Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+FCIT,F & C Investment Trust,Closed End Investments,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+FRES,Fresnillo plc,Precious Metals and Mining,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+GAW,Games Workshop,Leisure Goods,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+GLEN,Glencore,Industrial Metals and Mining,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+GSK,GSK plc,"Pharmaceuticals, Biotechnology and Marijuana Producers",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+HLN,Haleon,"Pharmaceuticals, Biotechnology and Marijuana Producers",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+HLMA,Halma plc,Electronic and Electrical Equipment,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+HSX,Hiscox,Non-life Insurance,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+HWDN,Howdens Joinery,Retailers,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+HSBA,HSBC,Banks,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+ICG,ICG,Investment Banking and Brokerage Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+IGG,IG Group,Investment Banking and Brokerage Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+IHG,IHG Hotels & Resorts,Travel and Leisure,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+IMI,IMI,Electronic and Electrical Equipment,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+IMB,Imperial Brands,Tobacco,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+INF,Informa,Media,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+IAG,International Airlines Group,Travel and Leisure,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+ITRK,Intertek,Industrial Support Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+INVP,Investec,Banks,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+ITH,Ithaca Energy,Non-Renewable Energy,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+JD,JD Sports,Retailers,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BGEO,Lion Finance Group,Banks,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+KGF,Kingfisher plc,Retailers,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+LAND,Land Securities,Real Estate Investment Trusts,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+LGEN,Legal & General,Life Insurance,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+LLOY,Lloyds Banking Group,Banks,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+LMP,LondonMetric Property,Real Estate Investment Trusts,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+LSEG,London Stock Exchange Group,Finance and Credit Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+MNG,M&G,Investment Banking and Brokerage Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+MKS,Marks & Spencer,"Personal Care, Drug and Grocery Stores",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+MRO,Melrose Industries,Aerospace and Defense,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+MTLN,Metlen Energy & Metals,"Gas, Water and Multi-utilities",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+NG,National Grid plc,"Gas, Water and Multi-utilities",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+NWG,NatWest Group,Banks,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+NXT,Next plc,Retailers,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+PSON,Pearson plc,Media,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+PSH,Pershing Square Holdings,Closed End Investments,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+PCT,Polar Capital Technology Trust,Closed End Investments,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+PRU,Prudential plc,Life Insurance,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+RKT,Reckitt,"Personal Care, Drug and Grocery Stores",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+REL,RELX,Software and Computer Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+RTO,Rentokil Initial,Industrial Support Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+RIO,Rio Tinto,Industrial Metals and Mining,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+RR,Rolls-Royce Holdings,Aerospace and Defense,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+SGE,Sage Group,Software and Computer Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+SBRY,Sainsbury's,"Personal Care, Drug and Grocery Stores",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+SMT,Scottish Mortgage Investment Trust,Closed End Investments,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+SGRO,Segro,Real Estate Investment Trusts,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+SVT,Severn Trent,"Gas, Water and Multi-utilities",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+SHEL,Shell plc,Non-Renewable Energy,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+SMIN,Smiths Group,General Industrials,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+SN,Smith & Nephew,Medical Equipment and Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+SPX,Spirax Group,Industrial Engineering,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+SSE,SSE plc,Electricity,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+STAN,Standard Chartered,Banks,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+SDLF,Standard Life,Life Insurance,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+STJ,St. James's Place,Investment Banking and Brokerage Services,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+TSCO,Tesco,"Personal Care, Drug and Grocery Stores",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+BBOX,Tritax Big Box REIT,Real Estate Investment Trusts,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+ULVR,Unilever,"Personal Care, Drug and Grocery Stores",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+UU,United Utilities,"Gas, Water and Multi-utilities",2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+VOD,Vodafone Group,Telecommunications Service Providers,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+WEIR,Weir,Industrial Engineering,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+WTB,Whitbread,Travel and Leisure,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index
+WPP,WPP,Media,2026-10-01,https://en.wikipedia.org/wiki/FTSE_100_Index

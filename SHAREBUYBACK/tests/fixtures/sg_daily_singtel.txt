@@ -1,0 +1,63 @@
+Issuer & Securities
+Issuer/ Manager
+SINGAPORE TELECOMMUNICATIONS LIMITED
+Securities
+SINGTEL - SG1T75931496 - Z74
+Stapled Security
+No
+Announcement Details
+Announcement Title
+Share Buy Back - Daily Share Buy-Back Notice
+Date &Time of Broadcast
+12-Oct-2026 19:36:59
+Status
+New
+Announcement Sub Title
+S$2Bn Value Realisation Share Buy-back Programme
+Announcement Reference
+SG261012OTHR7K82
+Submitted By (Co./ Ind. Name)
+Lim Li Ching (Ms)
+Designation
+Company Secretary
+Description (Please provide a detailed description of the event in the box below)
+Share Buy-back pursuant to S$2Bn Value Realisation Share Buy-back Programme (shares purchased will be
+cancelled)
+Additional Details
+Start date for mandate of daily share buy-back
+29/07/2026
+Section A
+Maximum number of shares authorised for purchase
+815,992,956
+Purchase made by way of market acquisition
+Yes
+SHARE BUY BACK - DAILY SHARE BUY-BACK NOTICE::S$2BN VALUE REALISATION SHARE BUY-
+BACK PROGRAMME
+
+Singapore Exchange Overseas Exchange
+Date of Purchase 12/10/2026
+Total Number of shares purchased 2,805,200
+Number of shares cancelled 2,805,200
+Number of shares held as treasury shares 0
+Highest/ Lowest price per share
+Highest Price per share SGD 4.21
+Lowest Price per share SGD 4.17
+Total Consideration (including stamp duties, clearing changes etc) paid or payable for
+the shares
+SGD
+11,775,790.86
+Section B
+Purchase made by way of off-market acquisition on equal access scheme
+No
+Section C
+Cumulative No. of shares purchased to date^ Number Percentage#
+By way of Market Acquisition 40,551,300 0.248
+By way off Market Acquisition on equal access scheme 0 0
+Total 40,511,300 0.248
+#Percentage of company's issued shares excluding treasury shares as at the date of the share buy-back resolution
+^From the date on which share buy-back mandate is obtained
+Section D
+Number of issued shares excluding treasury shares after purchase
+16,279,513,376
+Number of treasury shares held after purchase
+14,413,479

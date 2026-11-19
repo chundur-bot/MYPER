@@ -1,0 +1,5 @@
+SHAREBUYBACK/buyback.db
+SHAREBUYBACK/*.db
+SHAREBUYBACK/inbox/
+SHAREBUYBACK/backups/
+__pycache__/

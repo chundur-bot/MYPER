@@ -1,0 +1,119 @@
+Notification of buy-back
+Notification of buy-back 1 / 6
+Announcement Summary
+Name of entity
+COMMONWEALTH BANK OF AUSTRALIA.
+Announcement type
+Update announcement
+Type of update
+Date of this announcement
+28/6/2023
+Reason for update
+Final buy-back notification
+ASX Security code and description of the class of +securities the subject of the buy-back
+CBA : ORDINARY FULLY PAID
+The type of buy-back is:
+Total number of +securities bought back
+30,222,281
+Total consideration paid or payable for the securities
+AUD 2,999,999,977.85000
+Refer to next page for full details of the announcement
+On market buy-back
+Final buy-back notification
+
+Notification of buy-back
+Notification of buy-back 2 / 6
+Part 1 - Entity and announcement details
+1.1 Name of entity
+COMMONWEALTH BANK OF AUSTRALIA.
+We (the entity named above) provide the following information about our buy-back.
+1.2 Registration number type
+ABN
+Registration number
+48123123124
+1.3 ASX issuer code
+CBA
+1.4 The announcement is
+1.4a Type of update
+1.4b Reason for update
+Final buy-back notification
+1.4c Date of initial notification of buy-back
+9/2/2022
+1.4d Date of previous announcement to this update
+28/6/2023
+1.5 Date of this announcement
+28/6/2023
+1.6 ASX Security code and description of the class of +securities the subject of the buy-back
+CBA : ORDINARY FULLY PAID
+Final buy-back notification
+Update/amendment to previous announcement
+
+Notification of buy-back
+Notification of buy-back 3 / 6
+Part 2 - Type of buy-back
+2.1 The type of buy-back is:
+On market buy-back
+
+Notification of buy-back
+Notification of buy-back 4 / 6
+Part 3 - Buy-back details
+Part 3A - Details of +securities, price and reason
+3A.1 Total number of +securities on issue in the class of
++securities to be bought back
+1,688,414,169
+3A.4 Does the entity intend to buy back a minimum
+number of +securities
+3A.5 Does the entity intend to buy back a maximum
+number of securities
+3A.6 Name of broker or brokers who will offer to buy back +securities on the entity's behalf
+Broker name:
+Barrenjoey Markets Pty Limited (ABN 66 636 976 059)
+3A.9 Are the +securities being bought back for a cash consideration?
+3A.9a Is the price to be paid for +securities bought back known?
+3A.9a.1 In what currency will the buy-back consideration
+be paid?
+AUD - Australian Dollar
+Part 3B - Buy-back restrictions and conditions
+3B.1 Does the buy-back require security holder
+approval?
+No
+No
+Yes
+No
+No
+
+Notification of buy-back
+Notification of buy-back 5 / 6
+Part 3C - Key dates
+On-market buy-back
+3C.2 Proposed buy-back start date
+27/3/2023
+3C.3 Proposed buy-back end date
+14/2/2024
+Part 3D - Other Information
+3D.1 Any other information the entity wishes to notify to ASX about the buy-back
+CBA intends to buy back up to an aggregate total of $3 billion of its fully paid ordinary shares under the on-market
+buy-back (approximately $1.8 billion of which was purchased as at 15 February 2023).
+
+Notification of buy-back
+Notification of buy-back 6 / 6
+Part 5 - Final buy-back notification
+For on-market buy-backs, a final buy-back notification must be submitted at least half an hour before the commencement of
+trading on the business day after the company buys back the maximum number of securities that it wanted or the company
+decides it will stop buying back securities.
+For equal access buy-back schemes, a final buy-back notification must be submitted no later than five business days after
+the buy-back offer closing date.
+For employee share scheme buybacks, selective buy-backs and other buy-backs, a final buy-back notification must be
+submitted by no later than five business days after the completion of the buy-back.
+5.1 Total number of +securities bought back
+30,222,281
+5.2 Total consideration paid or payable for the securities
+AUD 2,999,999,977.85000
+5.3 Highest price paid
+AUD 109.20000000
+5.4 Date highest price was paid
+25/11/2022
+5.5 Lowest price paid
+AUD 88.80000000
+5.6 Date lowest price was paid
+24/6/2022

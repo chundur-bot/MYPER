@@ -1,0 +1,68 @@
+Issuer & Securities
+Issuer/ Manager
+SARINE TECHNOLOGIES LTD.
+Securities
+SARINE TECHNOLOGIES LTD - IL0010927254 - U77
+Stapled Security
+No
+Announcement Details
+Announcement Title
+Share Buy Back - Daily Share Buy-Back Notice
+Date &Time of Broadcast
+08-Nov-2026 23:15:17
+Status
+New
+Announcement Sub Title
+Daily Share Buy-Back Notice 6 November 2026
+Announcement Reference
+SG261108OTHRJCXK
+Submitted By (Co./ Ind. Name)
+Amir J. Zolty
+Designation
+Company Secretary
+Effective Date and Time of the event
+06/11/2026 17:00:00
+Description (Please provide a detailed description of the event in the box below)
+Please note that Saine Technologies Ltd. bought back 30,000 shares on 6 N0vember 2026.
+Additional Details
+Start date for mandate of daily share buy-back
+29/04/2026
+Section A
+Name of Overseas exchange where company has dual listing
+SHARE BUY BACK - DAILY SHARE BUY-BACK NOTICE::DAILY SHARE BUY-BACK NOTICE 6
+NOVEMBER 2026
+
+Tel Aviv Stock Exchange
+Maximum number of shares authorised for purchase
+34,044,804
+Purchase made by way of market acquisition
+Yes
+Singapore Exchange Overseas Exchange
+Date of Purchase 06/11/2026 06/11/2026
+Total Number of shares purchased 30,000 0
+Number of shares cancelled 0 0
+Number of shares held as treasury shares 30,000 0
+Highest/ Lowest price per share
+Highest Price per share SGD 0.138 ILS0
+Lowest Price per share SGD 0.132 ILS0
+Total Consideration (including stamp duties, clearing changes etc) paid or payable for
+the shares
+SGD
+4,163.29
+ILS
+0
+Section B
+Purchase made by way of off-market acquisition on equal access scheme
+No
+Section C
+Cumulative No. of shares purchased to date^ Number Percentage#
+By way of Market Acquisition 512,200 0.15
+By way off Market Acquisition on equal access scheme 0 0
+Total 512,200 0.15
+#Percentage of company's issued shares excluding treasury shares as at the date of the share buy-back resolution
+^From the date on which share buy-back mandate is obtained
+Section D
+Number of issued shares excluding treasury shares after purchase
+339,935,847
+Number of treasury shares held after purchase
+16,957,274

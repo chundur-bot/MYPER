@@ -1,0 +1,78 @@
+market,field,phrase,means,example
+ALL,programme_date,announced {...} on {DATE},Programme announced,"as announced on 05 March 2026"
+ALL,programme_date,further to its announcement on {DATE},Programme announced,"Further to its announcement on 15 May 2025 of the commencement of a share buyback programme"
+ALL,programme_date,further to the announcement on {DATE},Programme announced,"Further to the announcement on 1 October 2026"
+ALL,treatment,will not be cancelled,Treasury,"The shares will not be cancelled and will be held in treasury"
+ALL,treatment,will be held in treasury,Treasury,"The repurchased shares will be held in treasury."
+ALL,treatment,are being held in treasury,Treasury,
+ALL,treatment,shall be held in treasury,Treasury,
+ALL,treatment,will be held {...} as treasury shares,Treasury,"will be held by the Company as treasury shares"
+ALL,treatment,will be held {...} as treasury stock,Treasury,"Shares acquired will be held as treasury stock"
+ALL,treatment,are being held {...} as treasury shares,Treasury,
+ALL,treatment,are being held {...} as treasury stock,Treasury,"the shares are being held as treasury stock"
+ALL,treatment,shall be held {...} as treasury shares,Treasury,
+ALL,treatment,shall be held {...} as treasury stock,Treasury,
+ALL,treatment,will be cancelled on acquisition,Cancelled,"Shares bought back will be cancelled on acquisition."
+ALL,treatment,will be cancelled,Cancelled,"Shares acquired will be cancelled."
+ALL,treatment,to be cancelled,Cancelled,
+ALL,treatment,purchased for cancellation,Cancelled,"it has purchased for cancellation the following number"
+ALL,treatment,repurchased for cancellation,Cancelled,
+ALL,treatment,cancelled on acquisition,Cancelled,
+ALL,treatment,purchased and cancelled,Cancelled,
+ALL,treatment,repurchased and cancelled,Cancelled,
+ALL,treatment,bought back and cancelled,Cancelled,
+ALL,treatment,acquired and cancelled,Cancelled,
+ALL,treatment,intends to cancel,Cancelled,"The Company intends to cancel these shares."
+ALL,broker,"acting through its corporate stockbroker, {NAME} (",Through,"acting through its corporate stockbroker, Citigroup Global Markets Limited (the ""Broker"")"
+ALL,broker,purchased {...} from {NAME} (,From,"it has purchased the following number of its ordinary shares, from Goldman Sachs International (the ""Broker"")"
+ALL,broker,purchased {...} from {NAME} in accordance,From,"purchased ... from BNP PARIBAS SA in accordance with the authority"
+ALL,broker,purchased {...} from {NAME} as part,From,
+ALL,broker,"purchased {...} through {NAME}, the following",Through,"it has purchased for cancellation, through Shore Capital Stockbrokers Limited, the following"
+ALL,treatment,intends to place {...} into treasury,Treasury,"The Company intends to place the purchased shares into Treasury."
+ALL,broker,purchased {...} through {NAME} as part,Through,"purchased ... through Peel Hunt LLP as part of the buyback programme"
+ALL,programme_runs,from {DATE} until {DATE},Start and end,"from 1 March 2026 until 28 February 2027"
+ALL,programme_runs,from {DATE} to {DATE},Start and end,
+ALL,programme_runs,from {DATE} through {DATE},Start and end,
+ALL,programme_runs,from {DATE} and ending no later than {DATE},Start and end,"commencing from 2 March 2026 and ending no later than 31 December 2026"
+ALL,programme_runs,on or from {DATE},Start,"will commence on or from 2 March 2026"
+ALL,programme_runs,will commence on {DATE},Start,"The programme will commence on 2 March 2026"
+ALL,programme_runs,will end no later than {DATE},End,"and will end no later than 31 December 2026"
+ALL,treatment,will be retired,Cancelled,Shares repurchased will be retired.
+ALL,treatment,to be retired,Cancelled,The repurchased shares are to be retired.
+ALL,treatment,have been retired,Cancelled,All shares repurchased have been retired.
+ALL,treatment,will be cancelled upon,Cancelled,The shares will be cancelled upon settlement.
+ALL,treatment,will be subsequently cancelled,Cancelled,The shares repurchased will be subsequently cancelled.
+ALL,treatment,will subsequently be cancelled,Cancelled,The repurchased shares will subsequently be cancelled.
+ALL,treatment,to be held in treasury,Treasury,The shares purchased are to be held in treasury.
+ALL,treatment,to be held {...} as treasury shares,Treasury,The shares are to be held by the Company as treasury shares.
+ALL,treatment,will be kept as treasury shares,Treasury,The shares bought back will be kept as treasury shares.
+ALL,treatment,will be transferred to treasury,Treasury,The shares will be transferred to treasury.
+ALL,programme_date,programme announced on {DATE},Programme announced,under the share buy-back programme announced on 12 February 2026
+ALL,programme_date,program announced on {DATE},Programme announced,"under the share repurchase program announced on February 12, 2026"
+ALL,programme_date,launched on {DATE},Programme announced,the share buyback programme launched on 3 March 2026
+ALL,programme_runs,commencing on {DATE},Start,commencing on 2 March 2026
+ALL,programme_runs,starting on {DATE},Start,starting on 2 March 2026
+ALL,programme_runs,will end on {DATE},End,The programme will end on 31 December 2026
+ALL,programme_runs,will run until {DATE},End,The programme will run until 31 December 2026
+ALL,programme_runs,will expire on {DATE},End,The authority will expire on 30 June 2027
+ALL,programme_runs,will terminate on {DATE},End,"The program will terminate on December 31, 2026"
+ALL,programme_runs,valid until {DATE},End,The mandate is valid until 30 April 2027
+ALL,broker,has appointed {NAME} to manage,Appointed,The Company has appointed Morgan Stanley & Co. International plc to manage the programme
+ALL,broker,has appointed {NAME} to conduct,Appointed,The Company has appointed UBS AG London Branch to conduct the buyback
+ALL,broker,has appointed {NAME} to carry out,Appointed,The Company has appointed Jefferies International Limited to carry out the programme
+ALL,broker,has instructed {NAME} to,Appointed,The Company has instructed Barclays Bank PLC to purchase shares on its behalf
+ALL,broker,has engaged {NAME} to,Appointed,The Company has engaged Citigroup Global Markets Limited to repurchase shares
+ALL,broker,has mandated {NAME} to,Appointed,The Company has mandated BNP Paribas to execute the programme
+ALL,programme_increase,increase to its existing {...} buy-back,Size increased,an increase to its existing on-market share buy-back program by up to a further $500 million
+ALL,programme_increase,increase to the existing {...} buy-back,Size increased,
+ALL,programme_increase,increase in the size of {...} buy-back,Size increased,
+ALL,programme_increase,increase the size of {...} buy-back,Size increased,
+ALL,programme_increase,buy-back {...} increased by,Size increased,On-market share buy-back program increased by up to $500 million
+ALL,programme_increase,buyback {...} increased by,Size increased,
+ALL,programme_increase,buy-back {...} by up to a further,Size increased,
+ALL,programme_increase,upsize {...} buy-back,Size increased,
+ALL,programme_runs,will run up to {DATE},End,the program will run up to 31 May 2024
+ALL,programme_runs,to be completed by {DATE},End,expected to commence on 6 March 2026 and to be completed by 6 August 2026
+ALL,programme_runs,will be completed by {DATE},End,
+ALL,programme_runs,expected to commence on {DATE},Start,Purchases of Shares under the Programme are expected to commence on 6 March 2026
+ALL,broker,agreement with {NAME} (,Appointed,"has entered into a non-discretionary agreement with Citigroup Global Markets Limited (""Broker"")"

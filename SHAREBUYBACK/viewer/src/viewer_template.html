@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buyback Data Viewer</title>
+<style>
+/* The Tender capture tool's light look: grey window, white panels, blue accent. Segoe UI and Consolas, no web fonts. */
+:root {
+  --bg: #f0f0f0; --surface: #ffffff; --surface-2: #f5f5f5; --raise: #e8e8e8; --border: #d0d0d0; --border-strong: #b0b0b0; --field: #a0a0a0;
+  --ink: #000000; --ink-2: #3a3a3a; --muted: #5f5e5a; --accent: #1558a8; --link: #0a5fc2;
+  --hover: #dcecff; --stripe: #eaf2fb; --select: #3399ff; --unconfirmed: #ffe8a3; --rule: #d3d1c7;
+  --good: #176b3a; --good-soft: #def2e5; --warn: #8a5a00; --warn-soft: #fff0d6; --bad: #b00000; --bad-soft: #fde8e7; --info-soft: #dcecff;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 13px/1.45 "Segoe UI", Arial, system-ui, sans-serif; }
+.mono, td.n, th.n { font-family: Consolas, "Cascadia Mono", monospace; font-variant-numeric: tabular-nums; }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button, select, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+header { background: var(--surface-2); border-bottom: 1px solid var(--border-strong); padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.brand { font-weight: 700; font-size: 15px; }
+.brand b { color: var(--accent); }
+label.pick { display: flex; align-items: center; gap: 6px; color: var(--ink-2); font-weight: 600; }
+select, input[type=search] { background: var(--surface); border: 1px solid var(--field); border-radius: 2px; padding: 4px 6px; min-height: 28px; }
+select:focus, input:focus { border-color: var(--accent); outline: none; }
+.btn { background: var(--raise); border: 1px solid var(--field); border-radius: 3px; padding: 4px 12px; cursor: pointer; min-height: 28px; }
+.btn:hover { background: var(--hover); border-color: var(--select); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.right { margin-left: auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.dbname { color: var(--muted); font-size: 12px; }
+main { padding: 16px; max-width: 1500px; }
+.panel { background: var(--surface); border: 1px solid var(--border-strong); border-radius: 3px; padding: 12px 14px; margin-bottom: 14px; }
+.panel h2 { margin: 0 0 8px; font-size: 14px; color: var(--accent); padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
+.empty { color: var(--muted); }
+.facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; }
+.fact { background: var(--surface-2); border: 1px solid var(--border); border-radius: 3px; padding: 8px 10px; }
+.fact .k { color: var(--muted); font-size: 12px; }
+.fact .v { font: 600 17px Consolas, monospace; }
+.tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border-strong); margin-bottom: 0; }
+.tabs button { background: #e0e0e0; border: 1px solid var(--border-strong); border-bottom: 0; margin-right: -1px; padding: 7px 16px; cursor: pointer; color: var(--muted); border-radius: 0; }
+.tabs button:hover { background: var(--hover); color: var(--ink); }
+.tabs button[aria-selected=true] { background: var(--surface); color: var(--ink); font-weight: 700; box-shadow: inset 0 -2px 0 var(--accent); }
+.tabbody { background: var(--surface); border: 1px solid var(--border-strong); border-top: 0; padding: 12px 14px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+.toolbar .count { color: var(--muted); font-size: 12px; }
+.twrap { overflow: auto; max-height: 68vh; border: 1px solid var(--border-strong); }
+table { border-collapse: collapse; width: 100%; }
+th, td { padding: 5px 8px; text-align: left; white-space: nowrap; vertical-align: top; }
+th { position: sticky; top: 0; background: var(--raise); border: 1px solid var(--border-strong); border-top: 0; font-weight: 600; cursor: pointer; user-select: none; font-size: 12px; }
+th .ar { color: var(--accent); }
+td { border-bottom: 1px solid var(--border); font-size: 12.5px; }
+td.wrap { white-space: normal; min-width: 240px; max-width: 520px; }
+td.n, th.n { text-align: right; }
+tbody tr:nth-child(even) td { background: var(--stripe); }
+tbody tr:hover td { background: var(--hover); }
+.tag { display: inline-block; padding: 0 6px; border-radius: 3px; font-size: 11px; font-weight: 600; }
+.tag.rep { background: var(--good-soft); color: var(--good); }
+.tag.calc { background: var(--info-soft); color: var(--accent); }
+.tag.warn { background: var(--warn-soft); color: var(--warn); }
+.st { font-weight: 700; }
+.st.live { color: var(--good); }
+.st.done { color: var(--bad); }
+.tag.bad { background: var(--bad-soft); color: var(--bad); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+.card { border: 1px solid var(--border-strong); border-radius: 3px; padding: 10px 12px; background: var(--surface); }
+.card h3 { margin: 0 0 6px; font-size: 13px; color: var(--accent); }
+dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; font-size: 12.5px; }
+dt { color: var(--ink-2); font-weight: 600; }
+dd { margin: 0; }
+.note { background: var(--warn-soft); border: 1px solid #f0d9a8; border-radius: 3px; padding: 8px 10px; margin: 8px 0; }
+.error { background: var(--bad-soft); border: 1px solid #f3b4b1; color: var(--bad); border-radius: 3px; padding: 8px 10px; margin: 8px 0; }
+.small { font-size: 12px; }
+details.grp { border: 1px solid var(--border-strong); border-radius: 3px; margin: 6px 0; background: var(--surface); }
+details.grp > summary { cursor: pointer; padding: 6px 10px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; background: var(--raise); }
+details.grp details.grp > summary { background: var(--surface-2); }
+details.grp details.grp details.grp > summary { background: var(--surface); }
+details.grp > summary b { color: var(--accent); min-width: 150px; }
+details.grp > .inner { padding: 6px 10px 8px 18px; }
+.sumcell { font: 12.5px Consolas, monospace; color: var(--ink-2); }
+.muted { color: var(--muted); }
+/* Daily activity charts, as in the app */
+:root { --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #eda100; --grid: #e4e4e4; }
+.charts { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 12px; }
+.charts .card h3 { display: flex; justify-content: space-between; gap: 8px; }
+.chart { position: relative; width: 100%; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .gl { stroke: var(--grid); stroke-width: 1; }
+.chart .ax { fill: var(--muted); font-size: 11px; font-family: "Segoe UI", Arial, system-ui, sans-serif; }
+.chart .lbl { fill: var(--ink-2); font-size: 11px; font-family: Consolas, "Cascadia Mono", monospace; }
+.chart .hit { fill: transparent; cursor: pointer; }
+.chart rect.hit:hover { fill: rgba(42, 120, 214, .07); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--ink-2); margin-bottom: 6px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; }
+#tip { position: absolute; z-index: 10; background: var(--ink); color: #fff; border-radius: 3px; padding: 5px 8px; font-size: 12px; pointer-events: none; display: grid; gap: 1px; max-width: 320px; }
+#tip[hidden] { display: none; }
+#tip span { color: #d8d8d8; }
+@media (max-width: 520px) { .charts { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<header>
+  <span class="brand">Share Buyback <b>Insight</b> · Data viewer <span class="small muted">v4</span></span>
+  <label class="pick" for="market">Market <select id="market" disabled><option>Choose a database first</option></select></label>
+  <label class="pick" for="company">Company <select id="company" disabled><option>—</option></select></label>
+  <div class="right">
+    <span class="dbname" id="dbname">No database chosen</span>
+    <label class="btn primary" for="file">Choose database<input type="file" id="file" accept=".db,.sqlite,.sqlite3" hidden></label>
+  </div>
+</header>
+<div id="tip" role="tooltip" hidden></div>
+<main id="main">
+  <div class="panel">
+    <h2>How to use</h2>
+    <p>Press <b>Choose database</b> and pick <code>buyback.db</code> from the Share Buyback Insight folder. Then choose a market and a company.</p>
+    <p class="small muted">This page only reads the file. It never changes it, and nothing leaves this PC. To see newer data, choose the file again.</p>
+  </div>
+</main>
+
+<script>/* sql.js 1.10.3, MIT licence: SQLite compiled for the browser. Copyright (c) 2017 sql.js authors. */
+%%SQLJS%%
+</script>
+<script id="engine">const SQLJS_WASM_BASE64 = "%%WASM_B64%%";</script>
+<script id="viewer-data">
+// Data layer: plain functions over a sql.js database, with no page code, so they can be tested on their own.
+const MARKET_NAMES = { AU: "Australia · ASX", UK: "United Kingdom · LSE", NZ: "New Zealand · NZX" };
+function rows(db, sql, params) {
+  const st = db.prepare(sql); st.bind(params || []);
+  const out = []; while (st.step()) out.push(st.getAsObject()); st.free(); return out;
+}
+function hasTable(db, name) { return rows(db, "select 1 from sqlite_master where type='table' and name=?", [name]).length > 0; }
+function columns(db, table) { return hasTable(db, table) ? new Set(rows(db, `pragma table_info(${table})`).map((r) => r.name)) : new Set(); }
+function checkDatabase(db) {
+  const need = ["companies", "documents", "programmes", "transactions", "snapshots"];
+  const missing = need.filter((t) => !hasTable(db, t));
+  return missing.length ? `This doesn't look like a Share Buyback Insight database: it has no ${missing.join(", ")} table.` : null;
+}
+function markets(db) {
+  return rows(db, `select country, count(distinct ticker) companies from documents where ticker is not null group by country
+    union select country, 0 from programmes where country not in (select country from documents where ticker is not null) group by country order by country`)
+    .map((r) => ({ code: r.country, name: MARKET_NAMES[r.country] || r.country, companies: r.companies }));
+}
+function companies(db, market) {
+  const where = market && market !== "ALL" ? "and x.country=?" : "";
+  return rows(db, `select x.country, x.ticker, coalesce(c.company, max(x.company_raw), x.ticker) company, count(x.doc_id) filings from
+      (select country, ticker, company_raw, doc_id from documents where ticker is not null union all select country, ticker, null, null from programmes) x
+      left join companies c on c.country=x.country and c.ticker=x.ticker where 1=1 ${where} group by x.country, x.ticker order by x.ticker, x.country`, market && market !== "ALL" ? [market] : []);
+}
+function summary(db, country, ticker) {
+  const one = (sql) => rows(db, sql, [country, ticker])[0] || {};
+  const reviewOpen = hasTable(db, "review") ? one("select count(*) n from review where country=? and ticker=? and status='OPEN'").n : 0;
+  return { filings: one("select count(*) n from documents where country=? and ticker=?").n, latest: one("select max(doc_date) d from documents where country=? and ticker=?").d,
+    programmes: one("select count(*) n from programmes where country=? and ticker=?").n, purchaseDays: one("select count(distinct trade_date) n from transactions where country=? and ticker=?").n,
+    reviewOpen };
+}
+function notWaiting(db, table, alias) { return columns(db, table).has("waiting") ? ` and coalesce(${alias ? alias + "." : ""}waiting,0)=0` : ""; }
+function programmes(db, country, ticker) {
+  const list = rows(db, "select * from programmes where country=? and ticker=? order by announced_date desc", [country, ticker]).map((p) => {
+    // purchases waiting for a programme document count nowhere until linked, as in the app; a running total of shares with no amount can't give the amount
+    const last = rows(db, `select as_of, cum_shares, cum_value, currency, origin from snapshots where prog_id=? and cum_value is not null${notWaiting(db, "snapshots")} order by as_of desc limit 1`, [p.prog_id])[0];
+    const daily = rows(db, `select currency, sum(shares) shares, sum(value) value, count(value) priced, count(*) days, min(trade_date) first, max(trade_date) lastday from transactions where prog_id=?${notWaiting(db, "transactions")} group by currency`, [p.prog_id]);
+    let bought;
+    if (last) bought = { basis: `Latest running total, as of ${last.as_of}`, kind: last.origin === "reported" ? "Reported" : "Calculated", amounts: [{ currency: last.currency, value: last.cum_value, shares: last.cum_shares }] };
+    else if (daily.length) bought = { basis: "Sum of daily purchases read", kind: "Calculated", amounts: daily.map((d) => ({ currency: d.currency, value: d.priced ? d.value : null, shares: d.shares })), unpriced: daily.some((d) => d.priced < d.days) };
+    else bought = { basis: "No purchases read", kind: "", amounts: [] };
+    const first = daily.length ? daily.map((d) => d.first).sort()[0] : null;
+    const lastDay = daily.length ? daily.map((d) => d.lastday).sort().slice(-1)[0] : null;
+    const same = bought.amounts.length === 1 && p.max_value && p.max_currency === bought.amounts[0].currency && bought.amounts[0].value != null;
+    const documentNeeded = !!p.announced_date && !["buyback_type", "start_date", "end_date", "max_value", "max_shares"].some((k) => p[k]);
+    // As in the app: shares cancelled adds up only counts a filing states (Appendix 3H buy-back cancellations or, with none, a notice's reported count);
+    // the average is total paid / total shares in one currency, and blank if an amount or the shares are missing.
+    let filed = hasTable(db, "cessations") && columns(db, "cessations").has("prog_id") ? rows(db, "select ceased_on d, shares from cessations where prog_id=? and is_buyback=1 and shares is not null order by ceased_on", [p.prog_id]) : [];
+    let from = "Appendix 3H";
+    if (!filed.length && hasTable(db, "cancellations") && columns(db, "cancellations").has("basis")) { filed = rows(db, "select as_of d, shares from cancellations where prog_id=? and kind='Cancelled' and basis='Reported count' and shares is not null order by as_of", [p.prog_id]); from = "the notices"; }
+    const cancelled = filed.length ? { shares: filed.reduce((t, x) => t + x.shares, 0), working: `Sum of counts from ${from}: ` + filed.map((x) => `${Math.round(x.shares).toLocaleString("en-GB")} on ${x.d}`).join(" + ") } : null;
+    const one = bought.amounts.length === 1 && !bought.unpriced ? bought.amounts[0] : null;
+    const average = one && one.value != null && one.shares ? { price: one.value / one.shares, currency: one.currency, working: `${one.currency} ${Number(one.value).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} paid / ${Math.round(one.shares).toLocaleString("en-GB")} shares` } : null;
+    return { ...p, bought, firstPurchase: first, lastPurchase: lastDay, usedPct: same ? 100 * bought.amounts[0].value / p.max_value : null, documentNeeded, cancelled, average };
+  });
+  // As in the app: a programme still marked ACTIVE shows COMPLETED, tagged Calculated with its reason, once it has used its whole target
+  // or a later programme has started buying after its last purchase. A completion a notice states is Reported.
+  list.forEach((p) => {
+    p.statusBasis = p.status === "COMPLETED" ? "Reported" : ""; p.statusWorking = p.status === "COMPLETED" ? "The notice says the programme has completed" : "";
+    if (p.status === "COMPLETED") return;
+    const later = list.filter((o) => (o.announced_date || "") > (p.announced_date || "") && o.firstPurchase && p.lastPurchase && o.firstPurchase > p.lastPurchase)
+      .sort((a, b) => a.firstPurchase.localeCompare(b.firstPurchase));
+    if (p.usedPct != null && p.usedPct >= 99.95) Object.assign(p, { status: "COMPLETED", statusBasis: "Calculated", statusWorking: `${p.usedPct.toFixed(1)}% of its target used` });
+    else if (later.length) Object.assign(p, { status: "COMPLETED", statusBasis: "Calculated", statusWorking: `The programme announced ${later[0].announced_date} began buying on ${later[0].firstPurchase}, after this one's last purchase on ${p.lastPurchase}` });
+  });
+  return list;
+}
+function purchases(db, country, ticker) {
+  const tc = columns(db, "transactions");
+  const opt = (name) => (tc.has(name) ? `t.${name}` : `null ${name}`);
+  return rows(db, `select t.trade_date, p.announced_date programme, t.venue, t.shares, t.price_avg, t.price_high, t.price_low, t.price_unit, t.value, t.currency, t.value_origin,
+    ${opt("broker")}, ${opt("broker_role")}, ${opt("broker_text")}, ${opt("waiting")}, d.doc_date filed, d.source_url link
+    from transactions t left join programmes p on p.prog_id=t.prog_id left join documents d on d.doc_id=t.doc_id where t.country=? and t.ticker=? order by t.trade_date desc, t.venue`, [country, ticker])
+    .map((r) => ({ ...r, basis: r.value == null ? "" : r.value_origin === "reported" ? "Reported" : "Calculated" }));
+}
+function groupPurchases(list) {
+  // Programme, then year, then month, then each date. Totals add up the rows below them and leave out purchases waiting for a programme document.
+  const totals = (rs) => {
+    const counted = rs.filter((r) => !r.waiting);
+    const money = {}; let shares = 0, weighted = 0, priced = 0, unit = null;
+    counted.forEach((r) => {
+      shares += r.shares || 0;
+      if (r.value != null) money[r.currency] = (money[r.currency] || 0) + r.value;
+      if (r.price_avg != null && r.shares) { weighted += r.shares * r.price_avg; priced += r.shares; unit = unit === null || unit === r.price_unit ? r.price_unit : "mixed"; }
+    });
+    return { days: new Set(counted.map((r) => r.trade_date)).size, rows: counted.length, shares, money, avg: priced && unit !== "mixed" ? weighted / priced : null, unit, unpriced: counted.filter((r) => r.value == null).length, waiting: rs.length - counted.length };
+  };
+  const by = (rs, key) => { const m = new Map(); rs.forEach((r) => { const k = key(r); if (!m.has(k)) m.set(k, []); m.get(k).push(r); }); return [...m.entries()]; };
+  return by(list, (r) => r.programme || "").map(([programme, prs]) => ({
+    programme, totals: totals(prs),
+    years: by(prs, (r) => (r.trade_date || "").slice(0, 4)).sort((a, b) => b[0].localeCompare(a[0])).map(([year, yrs]) => ({
+      year, totals: totals(yrs),
+      months: by(yrs, (r) => (r.trade_date || "").slice(0, 7)).sort((a, b) => b[0].localeCompare(a[0])).map(([month, mrs]) => ({ month, totals: totals(mrs), rows: mrs.sort((a, b) => (b.trade_date || "").localeCompare(a.trade_date || "")) })),
+    })),
+  })).sort((a, b) => b.programme.localeCompare(a.programme));
+}
+function activity(db, progId) {
+  // One programme's charts, as on the app's Daily activity page: running totals when the notices give amounts, otherwise the daily purchases added up.
+  const p = rows(db, "select * from programmes where prog_id=?", [progId])[0];
+  if (!p) return null;
+  const snaps = rows(db, `select as_of, cum_shares, cum_value, currency, origin from snapshots where prog_id=?${notWaiting(db, "snapshots")} order by as_of`, [progId]);
+  const basis = (s) => (s.origin === "reported" || s.origin === "rounded" ? "Reported" : "Calculated");
+  let paid = snaps.filter((s) => s.cum_value != null).map((s) => ({ date: s.as_of, value: s.cum_value, currency: s.currency, basis: basis(s) }));
+  let shares = snaps.filter((s) => s.cum_shares != null).map((s) => ({ date: s.as_of, value: s.cum_shares, basis: basis(s) }));
+  const daily = rows(db, `select trade_date, coalesce(nullif(venue,''),'All venues') venue_label, shares, value, currency, price_avg, price_unit from transactions where prog_id=?${notWaiting(db, "transactions")} order by trade_date, venue`, [progId]);
+  if (!paid.length) {  // no running totals with amounts: add up the days held, which are only the days with a notice read
+    let v = 0, s = 0; paid = []; shares = [];
+    daily.forEach((r) => { s += r.shares || 0; if (r.value != null) v += r.value; paid.push({ date: r.trade_date, value: v, currency: r.currency, basis: "Calculated" }); shares.push({ date: r.trade_date, value: s, basis: "Calculated" }); });
+  }
+  const currency = paid.length ? paid[paid.length - 1].currency : p.max_currency;
+  const target = p.max_value ? { kind: "money", value: p.max_value, currency: p.max_currency, comparable: p.max_currency === currency } : p.max_shares ? { kind: "shares", value: p.max_shares, comparable: true } : null;
+  return { programme: p, paid, shares, currency, target, daily };
+}
+function runningTotals(db, country, ticker) {
+  return rows(db, `select s.as_of, p.announced_date programme, s.cum_shares, s.cum_value, s.currency, s.origin, s.working, d.source_url link from snapshots s join programmes p on p.prog_id=s.prog_id
+    left join documents d on d.doc_id=s.doc_id where p.country=? and p.ticker=? order by s.as_of desc`, [country, ticker])
+    .map((r) => ({ ...r, basis: r.origin === "reported" ? "Reported" : "Calculated" }));
+}
+function cessations(db, country, ticker) {
+  if (!hasTable(db, "cessations")) return null;
+  return rows(db, `select e.ceased_on, e.security_code, e.security, e.shares, e.reason, e.is_buyback, e.consideration, e.currency, p.announced_date programme, d.doc_date filed, d.source_url link
+    from cessations e left join programmes p on p.prog_id=e.prog_id left join documents d on d.doc_id=e.doc_id where e.country=? and e.ticker=? order by e.ceased_on desc`, [country, ticker])
+    .map((r) => ({ ...r, kind: r.is_buyback ? "Buy-back" : "Other", programme: r.is_buyback ? (r.programme || "No programme read") : "Not a buy-back" }));
+}
+function filings(db, country, ticker) {
+  const c = columns(db, "documents");
+  const pick = (name) => (c.has(name) ? name : `null ${name}`);
+  return rows(db, `select doc_date, ${pick("heading")}, ${pick("reason")}, ${pick("appendix")}, ${pick("filing_type")}, doc_type, status, message, ${pick("source_url")}, file_name from documents where country=? and ticker=? order by doc_date desc, doc_id desc`, [country, ticker]);
+}
+function reviews(db, country, ticker) {
+  if (!hasTable(db, "review")) return [];
+  const c = columns(db, "documents");
+  return rows(db, `select r.kind, r.detail, r.created_at, ${c.has("heading") ? "d.heading" : "null heading"}, d.doc_date, ${c.has("source_url") ? "d.source_url" : "null source_url"} link
+    from review r left join documents d on d.doc_id=r.doc_id where r.country=? and r.ticker=? and r.status='OPEN' order by r.review_id desc`, [country, ticker]);
+}
+</script>
+<script id="viewer-page">
+// Page code: builds the screen from the data layer above.
+const $ = (s) => document.querySelector(s);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const int = (v) => (v == null || v === "" ? "" : Number(v).toLocaleString("en-GB", { maximumFractionDigits: 0 }));
+const dec = (v, d = 4) => (v == null || v === "" ? "" : Number(v).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: d }));
+const money = (v, cur) => (v == null ? "" : `${esc(cur || "")} ${Number(v).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+const tag = (kind) => (kind ? `<span class="tag ${kind === "Reported" ? "rep" : "calc"}">${esc(kind)}</span>` : "");
+const link = (url) => (url ? `<a href="${esc(url)}" target="_blank" rel="noopener" title="${esc(url)}">Doc</a>` : `<span class="muted small">No link</span>`);
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const ISO_DATE = /\b(\d{4})-(\d{2})-(\d{2})\b/g;
+const usDate = (s) => String(s ?? "").replace(ISO_DATE, (m, y, mo, d) => `${mo}/${d}/${y}`);
+const S = { db: null, market: "ALL", company: null, tab: "programmes", prog: null };
+let SQL = null;
+
+async function engine() {
+  if (SQL) return SQL;
+  const bin = Uint8Array.from(atob(SQLJS_WASM_BASE64), (c) => c.charCodeAt(0));
+  SQL = await initSqlJs({ wasmBinary: bin });
+  return SQL;
+}
+
+$("#file").onchange = async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  $("#main").innerHTML = `<div class="panel">Opening ${esc(f.name)}…</div>`;
+  try {
+    const sql = await engine();
+    const db = new sql.Database(new Uint8Array(await f.arrayBuffer()));
+    const problem = checkDatabase(db);
+    if (problem) { db.close(); throw new Error(problem); }
+    if (S.db) S.db.close();
+    S.db = db;
+    $("#dbname").textContent = `${f.name} · opened ${new Date().toLocaleString("en-GB")}`;
+    fillMarkets();
+  } catch (x) {
+    $("#main").innerHTML = `<div class="error">Couldn't open this file: ${esc(x.message)}</div>`;
+  }
+  e.target.value = "";
+};
+
+function fillMarkets() {
+  const ms = markets(S.db);
+  if (!ms.some((m) => m.code === S.market)) S.market = "ALL";
+  $("#market").disabled = false;
+  $("#market").innerHTML = `<option value="ALL">All markets</option>` + ms.map((m) => `<option value="${esc(m.code)}" ${m.code === S.market ? "selected" : ""}>${esc(m.name)} (${m.companies})</option>`).join("");
+  fillCompanies();
+}
+function fillCompanies() {
+  const cs = companies(S.db, S.market);
+  if (!cs.some((c) => `${c.country}|${c.ticker}` === S.company)) S.company = cs.length ? `${cs[0].country}|${cs[0].ticker}` : null;
+  $("#company").disabled = !cs.length;
+  $("#company").innerHTML = cs.length ? cs.map((c) => `<option value="${esc(c.country)}|${esc(c.ticker)}" ${`${c.country}|${c.ticker}` === S.company ? "selected" : ""}>${esc(c.ticker)} · ${esc(c.company)}${S.market === "ALL" ? ` (${esc(c.country)})` : ""}</option>`).join("") : `<option>No companies</option>`;
+  draw();
+}
+$("#market").onchange = (e) => { S.market = e.target.value; fillCompanies(); };
+$("#company").onchange = (e) => { S.company = e.target.value; draw(); };
+
+const TABS = [["programmes", "Programmes"], ["purchases", "Daily purchases"], ["activity", "Daily activity"],["totals", "Running totals"], ["cessations", "Cessations (3H)"], ["filings", "Filings"], ["review", "Review"]];
+
+function draw() {
+  if (!S.db) return;
+  if (!S.company) { $("#main").innerHTML = `<div class="panel empty">No companies with data in this market yet.</div>`; return; }
+  const [country, ticker] = S.company.split("|");
+  const name = (companies(S.db, country).find((c) => c.ticker === ticker) || {}).company || ticker;
+  const s = summary(S.db, country, ticker);
+  const data = { programmes: programmes(S.db, country, ticker), purchases: purchases(S.db, country, ticker), totals: runningTotals(S.db, country, ticker),
+    cessations: cessations(S.db, country, ticker), filings: filings(S.db, country, ticker), review: reviews(S.db, country, ticker) };
+  const counts = { programmes: data.programmes.length, purchases: data.purchases.length, activity: data.programmes.filter((p) => p.lastPurchase || p.bought.amounts.length).length,totals: data.totals.length, cessations: data.cessations ? data.cessations.length : 0, filings: data.filings.length, review: data.review.length };
+  $("#main").innerHTML = `<div class="panel"><h2>${esc(ticker)} · ${esc(name)} <span class="muted small">${esc(MARKET_NAMES[country] || country)}</span></h2>
+      <div class="facts">${[["Filings read", int(s.filings)], ["Latest filing", esc(s.latest || "–")], ["Programmes", int(s.programmes)], ["Purchase days", int(s.purchaseDays)], ["Open review items", int(s.reviewOpen)]].map(([k, v]) => `<div class="fact"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("")}</div></div>
+    <div class="tabs" role="tablist">${TABS.map(([k, l]) => `<button role="tab" data-tab="${k}" aria-selected="${k === S.tab}">${l} (${counts[k]})</button>`).join("")}</div>
+    <div class="tabbody" id="tabbody"></div>`;
+  document.querySelectorAll("[data-tab]").forEach((b) => (b.onclick = () => { S.tab = b.dataset.tab; draw(); }));
+  VIEWS[S.tab](data, ticker);
+}
+
+function table(host, rowsIn, cols, fileName) {
+  const st = { q: "", sort: null, dir: 1 };
+  host.innerHTML = `<div class="toolbar"><input type="search" placeholder="Search this table" aria-label="Search this table"><span class="count"></span><span class="right"><button class="btn" type="button">Export CSV</button></span></div><div class="twrap"><table><thead></thead><tbody></tbody></table></div>`;
+  const text = (r, c) => String(c.text ? c.text(r) : r[c.k] ?? "");
+  const render = () => {
+    let list = rowsIn.filter((r) => !st.q || cols.some((c) => text(r, c).toLowerCase().includes(st.q)));
+    if (st.sort) { const c = cols.find((x) => x.k === st.sort); list = [...list].sort((a, b) => { const x = a[c.k], y = b[c.k]; return (x == null) - (y == null) || (x > y ? 1 : x < y ? -1 : 0) * st.dir; }); }
+    host.querySelector("thead").innerHTML = `<tr>${cols.map((c) => `<th class="${c.num ? "n" : ""}" data-k="${c.k}">${esc(c.label)}${st.sort === c.k ? `<span class="ar"> ${st.dir > 0 ? "▲" : "▼"}</span>` : ""}</th>`).join("")}</tr>`;
+    host.querySelector("tbody").innerHTML = list.length ? list.map((r) => `<tr>${cols.map((c) => `<td class="${c.num ? "n" : ""} ${c.wrap ? "wrap" : ""}">${c.html ? c.html(r) : esc(text(r, c))}</td>`).join("")}</tr>`).join("") : `<tr><td colspan="${cols.length}" class="empty">Nothing to show.</td></tr>`;
+    host.querySelector(".count").textContent = `${list.length} of ${rowsIn.length} rows`;
+    host.querySelectorAll("th").forEach((th) => (th.onclick = () => { st.dir = st.sort === th.dataset.k ? -st.dir : 1; st.sort = th.dataset.k; render(); }));
+    host.querySelector(".btn").onclick = () => {
+      const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+      const csv = [cols.map((c) => q(c.label)).join(","), ...list.map((r) => cols.map((c) => q(usDate(c.csv ? c.csv(r) : r[c.k]))).join(","))].join("\r\n");
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" }));
+      a.download = fileName; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    };
+  };
+  host.querySelector("input").oninput = (e) => { st.q = e.target.value.trim().toLowerCase(); render(); };
+  render();
+}
+
+// ---------- charts, as on the app's Daily activity page ----------
+const shortNum = (v) => { const a = Math.abs(v); return a >= 1e9 ? (v / 1e9).toFixed(2) + "bn" : a >= 1e6 ? (v / 1e6).toFixed(1) + "m" : a >= 1e4 ? (v / 1e3).toFixed(0) + "k" : int(Math.round(v)); };
+const dayLabel = (d) => { const [y, m, dd] = String(d).split("-"); return `${m}/${dd}/${y.slice(2)}`; };
+const niceTop = (max) => { const m = Math.pow(10, Math.floor(Math.log10(max || 1))), r = max / m, n = r <= 1 ? 1 : r <= 2 ? 2 : r <= 2.5 ? 2.5 : r <= 5 ? 5 : 10; return { top: n * m, step: (n * m) / (n === 2.5 ? 5 : n === 1 || n === 10 ? 5 : 4) }; };
+function tips(el, texts) {
+  const tip = $("#tip");
+  el.querySelectorAll(".hit").forEach((h) => {
+    const show = (e) => { tip.innerHTML = texts[+h.dataset.i]; tip.hidden = false; const r = h.getBoundingClientRect(); tip.style.left = `${Math.min(window.innerWidth - tip.offsetWidth - 8, Math.max(8, (e && e.clientX ? e.clientX : r.left + r.width / 2) - tip.offsetWidth / 2))}px`; tip.style.top = `${r.top + window.scrollY - tip.offsetHeight - 8 > window.scrollY ? r.top + window.scrollY - tip.offsetHeight - 8 : r.bottom + window.scrollY + 8}px`; };
+    h.addEventListener("mousemove", show); h.addEventListener("focus", () => show()); h.addEventListener("mouseleave", () => (tip.hidden = true)); h.addEventListener("blur", () => (tip.hidden = true));
+  });
+}
+// One measure over time. Dots mark what the filings state; the lines between them only join saved notices, and don't show the days between.
+function trendChart(el, points, { fmt, target, label, zero = true }) {
+  if (!points.length) { el.innerHTML = `<p class="muted small">Nothing read for this yet.</p>`; return; }
+  const W = 640, H = 230, L = 74, R = 16, T = 16, B = 26;
+  const vals = points.map((p) => p.value).concat(target ? [target.value] : []);
+  const hi = Math.max(...vals), lo = zero ? 0 : Math.min(...vals), pad = zero ? 0 : (hi - lo || hi || 1) * 0.15;
+  const { top, step } = niceTop(zero ? hi : hi + pad - Math.max(lo - pad, 0));
+  const y0 = zero ? 0 : Math.max(0, lo - pad), yTop = zero ? top : Math.max(y0 + top, hi + pad * 0.5);
+  const ts = points.map((p) => +new Date(p.date)), t0 = Math.min(...ts), t1 = Math.max(...ts);
+  const x = (d) => (t1 === t0 ? (L + W - R) / 2 : L + (W - L - R) * ((+new Date(d) - t0) / (t1 - t0)));
+  const y = (v) => T + (H - T - B) * (1 - (v - y0) / (yTop - y0));
+  let g = "";
+  for (let i = 0, n = zero ? Math.round(top / step) : 4; i <= n; i++) { const v = y0 + (yTop - y0) * i / n; g += `<line class="gl" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${esc(fmt(v, true))}</text>`; }
+  if (target) g += `<line x1="${L}" x2="${W - R}" y1="${y(target.value)}" y2="${y(target.value)}" stroke="var(--ink-2)" stroke-width="1.5" stroke-dasharray="6 4"/><text class="lbl" x="${W - R}" y="${y(target.value) - 6}" text-anchor="end">Target ${esc(fmt(target.value, true))}</text>`;
+  if (points.length > 1) g += `<polyline fill="none" stroke="var(--series-1)" stroke-width="2" stroke-linejoin="round" points="${points.map((p) => `${x(p.date)},${y(p.value)}`).join(" ")}"/>`;
+  points.forEach((p, i) => { g += `<circle cx="${x(p.date)}" cy="${y(p.value)}" r="4" fill="var(--series-1)" stroke="var(--surface)" stroke-width="2"/><circle class="hit" data-i="${i}" tabindex="0" role="img" aria-label="${esc(dayLabel(p.date))}: ${esc(fmt(p.value))}" cx="${x(p.date)}" cy="${y(p.value)}" r="12"/>`; });
+  (t1 === t0 ? [points[0].date] : [points[0].date, points[points.length - 1].date]).forEach((d, i) => { g += `<text class="ax" x="${x(d)}" y="${H - 8}" text-anchor="${t1 === t0 ? "middle" : i ? "end" : "start"}">${esc(dayLabel(d))}</text>`; });
+  el.innerHTML = `<div class="chart"><svg viewBox="0 0 ${W} ${H}" role="group" aria-label="${esc(label)}">${g}</svg></div>`;
+  tips(el, points.map((p) => `<b>${esc(fmt(p.value))}</b><span>${esc(dayLabel(p.date))}${p.basis ? " · " + esc(p.basis) : ""}${target ? ` · ${(100 * p.value / target.value).toFixed(1)}% of target` : ""}</span>`));
+}
+// Shares per purchase date, stacked by venue. Only dates with a notice read appear, so the axis is by notice, not by calendar.
+function dailyBars(el, rs) {
+  if (!rs.length) { el.innerHTML = `<p class="muted small">No daily purchases read for this programme.</p>`; return; }
+  const dates = [...new Set(rs.map((r) => r.trade_date))], venues = [...new Set(rs.map((r) => r.venue_label))].sort();
+  const shown = venues.slice(0, 4), slot = (v) => Math.max(0, shown.indexOf(v)) + 1;
+  const totals = dates.map((d) => rs.filter((r) => r.trade_date === d).reduce((a, r) => a + (r.shares || 0), 0));
+  const W = 640, H = 230, L = 74, R = 16, T = 16, B = 26, { top, step } = niceTop(Math.max(...totals));
+  const y = (v) => T + (H - T - B) * (1 - v / top), bw = (W - L - R) / dates.length, barW = Math.min(36, bw * 0.62);
+  let g = "";
+  for (let v = 0; v <= top + 1e-9; v += step) g += `<line class="gl" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${esc(shortNum(v))}</text>`;
+  const every = Math.ceil(dates.length / 6);
+  dates.forEach((d, i) => {
+    let base = 0; const x0 = L + bw * i + (bw - barW) / 2, day = rs.filter((r) => r.trade_date === d).sort((a, b) => a.venue_label.localeCompare(b.venue_label));
+    day.forEach((r, k) => { const h = Math.max(1, y(base) - y(base + r.shares)), yy = y(base + r.shares) + (k ? 2 : 0), rr = k === day.length - 1 ? Math.min(4, h, barW / 2) : 0, hh = Math.max(1, h - (k ? 2 : 0));
+      g += `<path fill="var(--series-${slot(r.venue_label)})" d="M${x0},${yy + hh} V${yy + rr} Q${x0},${yy} ${x0 + rr},${yy} H${x0 + barW - rr} Q${x0 + barW},${yy} ${x0 + barW},${yy + rr} V${yy + hh} Z"/>`; base += r.shares; });
+    g += `<rect class="hit" data-i="${i}" tabindex="0" role="img" aria-label="${esc(dayLabel(d))}: ${int(totals[i])} shares" x="${L + bw * i}" y="${T}" width="${bw}" height="${H - T - B}"/>`;
+    if (i % every === 0) g += `<text class="ax" x="${x0 + barW / 2}" y="${H - 8}" text-anchor="middle">${esc(dayLabel(d))}</text>`;
+  });
+  g += `<line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="var(--border-strong)"/>`;
+  const legend = venues.length > 1 ? `<div class="legend">${shown.map((v) => `<span><i style="background:var(--series-${slot(v)})"></i>${esc(v)}</span>`).join("")}${venues.length > 4 ? `<span class="muted">Other venues share the first colour</span>` : ""}</div>` : "";
+  el.innerHTML = `${legend}<div class="chart"><svg viewBox="0 0 ${W} ${H}" role="group" aria-label="Daily shares bought back">${g}</svg></div>`;
+  tips(el, dates.map((d, i) => { const day = rs.filter((r) => r.trade_date === d); return `<b>${int(totals[i])} shares</b><span>${esc(dayLabel(d))}${day.length > 1 ? " · " + day.map((r) => `${esc(r.venue_label)} ${int(r.shares)}`).join(", ") : ""}</span>`; }));
+}
+
+const VIEWS = {
+  activity(data) {
+    const host = $("#tabbody");
+    const progs = data.programmes.filter((p) => p.lastPurchase || p.bought.amounts.length);
+    if (!progs.length) { host.innerHTML = `<p class="empty">No programmes with buying read for this company.</p>`; return; }
+    if (!progs.some((p) => p.prog_id === S.prog)) S.prog = progs[0].prog_id;
+    const a = activity(S.db, S.prog), t = a.target, cur = a.currency, daily = a.daily;
+    const units = [...new Set(daily.filter((r) => r.price_avg != null).map((r) => `${r.venue_label}|${r.price_unit}`))];
+    const unitFmt = (u) => (v) => (u === "GBp" ? `${Number(v).toFixed(2)}p` : `${u || ""} ${Number(v).toFixed(v < 10 ? 4 : 2)}`);
+    const moneyFmt = (v, axis) => (axis ? `${cur || ""} ${shortNum(v)}` : money(v, cur));
+    const held = new Set(daily.map((r) => r.trade_date)).size;
+    host.innerHTML = `<div class="toolbar"><label class="pick" for="actProg">Programme <select id="actProg">${progs.map((p) => `<option value="${p.prog_id}" ${p.prog_id === S.prog ? "selected" : ""}>Announced ${esc(p.announced_date || "not stated")} · ${esc(p.status || "")}</option>`).join("")}</select></label></div>
+      ${held < 3 ? `<div class="note">${held ? `Only ${int(held)} purchase day${held === 1 ? " is" : "s are"} read for this programme` : "No daily notices are read for this programme"}, so the daily charts are thin.</div>` : ""}
+      <div class="charts">
+        <div class="card"><h3>${t && t.kind === "shares" ? "Cumulative shares vs programme cap" : "Cumulative consideration paid vs programme target"} <span class="small muted">${t && t.kind === "shares" ? "shares" : esc(cur || "")}</span></h3><div id="cPaid"></div>
+          <div class="small muted">Dots are figures from filings; the lines between them only join notices read.${t && !t.comparable ? ` The target ${esc(money(t.value, t.currency))} isn't drawn, because spending is in ${esc(cur)} and amounts aren't converted.` : ""}${!t ? " No programme size is read, so there's no target line." : ""}</div></div>
+        <div class="card"><h3>Daily shares bought back <span class="small muted">shares</span></h3><div id="cShares"></div><div class="small muted">Only dates with a notice read appear.</div></div>
+        ${units.length ? units.map((u, i) => `<div class="card"><h3>Daily average price paid${units.length > 1 ? `: ${esc(u.split("|")[0])}` : ""} <span class="small muted">${esc(u.split("|")[1] || "")}</span></h3><div id="cPrice${i}"></div></div>`).join("") : `<div class="card"><h3>Daily average price paid</h3><p class="muted small">No daily prices read for this programme.</p></div>`}
+      </div>
+      <p class="small muted">Each programme from its first purchase to the latest notice read, in the currency the filings report. The date-wise list is on the Daily purchases tab.</p>`;
+    $("#actProg").onchange = (e) => { S.prog = +e.target.value; VIEWS.activity(data); };
+    if (t && t.kind === "shares") trendChart($("#cPaid"), a.shares, { fmt: (v) => shortNum(v), target: { value: t.value }, label: "Cumulative shares against the programme cap" });
+    else trendChart($("#cPaid"), a.paid, { fmt: moneyFmt, target: t && t.comparable ? { value: t.value } : null, label: "Cumulative consideration paid against the programme target" });
+    dailyBars($("#cShares"), daily);
+    units.forEach((u, i) => { const [venue, unit] = u.split("|"); trendChart($(`#cPrice${i}`), daily.filter((r) => r.venue_label === venue && r.price_unit === unit && r.price_avg != null).map((r) => ({ date: r.trade_date, value: r.price_avg })), { fmt: unitFmt(unit), zero: false, label: `Daily average price paid, ${venue}` }); });
+  },
+  programmes(data) {
+    const host = $("#tabbody");
+    if (!data.programmes.length) { host.innerHTML = `<p class="empty">No programmes read for this company.</p>`; return; }
+    host.innerHTML = `<div class="cards">${data.programmes.map((p) => `<div class="card"><h3>Announced ${esc(p.announced_date || "not stated")}</h3><dl>
+      <dt>Status</dt><dd><span class="st ${p.status === "COMPLETED" ? "done" : p.status === "ACTIVE" ? "live" : ""}">${esc(p.status || "–")}</span>${p.statusBasis === "Calculated" ? ` ${tag("Calculated")}<div class="small muted">${esc(p.statusWorking)}</div>` : ""}</dd><dt>Type</dt><dd>${esc(p.buyback_type || "–")}</dd>
+      <dt>Runs</dt><dd class="mono">${esc(p.start_date || "?")} to ${esc(p.end_date || "?")}</dd>
+      ${p.documentNeeded ? `<dt>Programme document</dt><dd><span class="tag warn">Needed</span> <span class="small muted">Type, dates and size come from the announcement. Add its link in the app.</span></dd>` : ""}
+      <dt>Target</dt><dd>${p.max_value ? money(p.max_value, p.max_currency) : p.max_shares ? `${int(p.max_shares)} shares` : "Not stated"}</dd>
+      <dt>Broker</dt><dd>${esc(p.broker || "Not disclosed")}</dd>
+      <dt>Bought</dt><dd>${p.bought.amounts.length ? p.bought.amounts.map((a) => `<b>${int(a.shares)} shares</b> ${a.value != null ? `(${money(a.value, a.currency)})` : `<span class="tag warn">No value</span>`}`).join("<br>") : "–"} ${tag(p.bought.kind)}<div class="small muted">${esc(p.bought.basis)}${p.bought.unpriced ? ". Some days have no price, so the amount is incomplete" : ""}</div></dd>
+      <dt>Used of target</dt><dd>${p.usedPct != null ? `${p.usedPct.toFixed(1)}% ${tag("Calculated")}` : `<span class="muted">Not comparable or no target</span>`}</dd>
+      <dt>Shares cancelled</dt><dd>${p.cancelled ? `${int(p.cancelled.shares)} ${tag("Calculated")}<div class="small muted">${esc(p.cancelled.working)}</div>` : "–"}</dd>
+      <dt>Average price paid</dt><dd>${p.average ? `${esc(p.average.currency)} ${p.average.price.toFixed(4)} ${tag("Calculated")}<div class="small muted">${esc(p.average.working)}</div>` : "–"}</dd>
+      <dt>Purchases read</dt><dd class="mono">${esc(p.firstPurchase || "–")} to ${esc(p.lastPurchase || "–")}</dd>
+      <dt>Shares</dt><dd>${esc(p.treatment || "Not stated")}${p.treatment_text ? `<div class="small muted">"${esc(p.treatment_text)}"</div>` : ""}</dd>
+      <dt>Shares on issue</dt><dd>${p.shares_on_issue ? int(p.shares_on_issue) : "–"}</dd></dl></div>`).join("")}</div>
+      <p class="small muted">Amounts are in the currency each notice reports and are never converted. The app's own programme totals use fuller rules, so a total here can differ slightly; its basis is shown under each amount.</p>`;
+  },
+  purchases(data, ticker) {
+    const host = $("#tabbody");
+    if (!data.purchases.length) { host.innerHTML = `<p class="empty">No purchases read for this company.</p>`; return; }
+    const sumLine = (s) => `<span class="sumcell">${int(s.days)} day${s.days === 1 ? "" : "s"}</span><span class="sumcell">${int(s.shares)} shares</span>${Object.entries(s.money).map(([c, v]) => `<span class="sumcell">${money(v, c)}</span>`).join("")}${s.avg != null ? `<span class="sumcell">avg ${dec(s.avg)} ${esc(s.unit || "")}</span>` : ""}${tag("Calculated")}${s.unpriced ? ` <span class="tag warn">${int(s.unpriced)} without a value</span>` : ""}${s.waiting ? ` <span class="tag warn">${int(s.waiting)} waiting, not counted</span>` : ""}`;
+    const rowsTable = (rs) => `<div class="twrap" style="max-height:none"><table><thead><tr><th>Purchase date</th><th>Venue</th><th class="n">Shares</th><th class="n">Average</th><th class="n">High</th><th class="n">Low</th><th>Unit</th><th class="n">Value</th><th>Basis</th><th>Broker</th><th>Filed</th><th>Filing</th></tr></thead><tbody>${rs.map((r) => `<tr>
+      <td>${esc(r.trade_date)}${r.waiting ? ` <span class="tag warn">Waiting</span>` : ""}</td><td>${esc(r.venue || "")}</td><td class="n">${int(r.shares)}</td><td class="n">${dec(r.price_avg)}</td><td class="n">${dec(r.price_high)}</td><td class="n">${dec(r.price_low)}</td><td>${esc(r.price_unit || "")}</td>
+      <td class="n">${r.value == null ? `<span class="tag warn">No value</span>` : money(r.value, r.currency)}</td><td>${tag(r.basis)}</td><td>${r.broker ? `${esc(r.broker)} <span class="small muted" title="${esc(r.broker_text || "")}">${esc(r.broker_role || "")}</span>` : `<span class="small muted">Not disclosed</span>`}</td><td>${esc(r.filed || "")}</td><td>${link(r.link)}</td></tr>`).join("")}</tbody></table></div>`;
+    const groups = groupPurchases(data.purchases);
+    host.innerHTML = `<div class="toolbar"><button class="btn" type="button" id="expandAll">Expand all</button><button class="btn" type="button" id="collapseAll">Collapse all</button><span class="right"><button class="btn" type="button" id="purCsv">Export CSV</button></span></div>
+      ${groups.map((g) => `<details class="grp" open><summary><b>Programme announced ${esc(g.programme || "not identified")}</b>${sumLine(g.totals)}</summary><div class="inner">
+        ${g.years.map((y) => `<details class="grp" open><summary><b>${esc(y.year)} total</b>${sumLine(y.totals)}</summary><div class="inner">
+          ${y.months.map((m) => `<details class="grp"><summary><b>${MONTHS[+m.month.slice(5, 7) - 1] || ""} ${esc(m.month.slice(0, 4))}</b>${sumLine(m.totals)}</summary><div class="inner">${rowsTable(m.rows)}</div></details>`).join("")}
+        </div></details>`).join("")}
+      </div></details>`).join("")}
+      <p class="small muted">Totals add up the purchases below them, in the currency each notice reports, and are never converted. Purchases waiting for a programme document are listed but not counted.</p>`;
+    $("#expandAll").onclick = () => host.querySelectorAll("details").forEach((d) => (d.open = true));
+    $("#collapseAll").onclick = () => host.querySelectorAll("details").forEach((d) => (d.open = false));
+    $("#purCsv").onclick = () => {
+      const cols = [["trade_date", "Purchase date"], ["programme", "Programme"], ["venue", "Venue"], ["shares", "Shares"], ["price_avg", "Average"], ["price_high", "High"], ["price_low", "Low"], ["price_unit", "Unit"], ["value", "Value"], ["currency", "Currency"], ["basis", "Basis"], ["broker", "Broker"], ["broker_role", "Broker role"], ["waiting", "Waiting"], ["filed", "Filed"], ["link", "Filing link"]];
+      const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+      const csv = [cols.map((c) => q(c[1])).join(","), ...data.purchases.map((r) => cols.map((c) => q(c[0] === "waiting" ? (r.waiting ? "Yes" : "") : usDate(r[c[0]]))).join(","))].join("\r\n");
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" }));
+      a.download = `${ticker}_daily_purchases.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    };
+  },
+  totals(data, ticker) {
+    table($("#tabbody"), data.totals, [
+      { k: "as_of", label: "As of" }, { k: "programme", label: "Programme" }, { k: "cum_shares", label: "Total shares", num: true, html: (r) => int(r.cum_shares) },
+      { k: "cum_value", label: "Total amount", num: true, html: (r) => money(r.cum_value, r.currency) }, { k: "basis", label: "Basis", html: (r) => tag(r.basis) },
+      { k: "working", label: "Working", wrap: true }, { k: "link", label: "Filing link", html: (r) => link(r.link) }], `${ticker}_running_totals.csv`);
+  },
+  cessations(data, ticker) {
+    if (data.cessations == null) { $("#tabbody").innerHTML = `<p class="empty">This database is from a version before Appendix 3H was captured.</p>`; return; }
+    table($("#tabbody"), data.cessations, [
+      { k: "ceased_on", label: "Ceased on" }, { k: "security", label: "Security", text: (r) => `${r.security_code || ""} ${r.security || ""}` }, { k: "shares", label: "Number", num: true, html: (r) => int(r.shares) },
+      { k: "reason", label: "Reason", wrap: true }, { k: "kind", label: "Kind" }, { k: "consideration", label: "Consideration", num: true, html: (r) => (r.consideration == null ? `<span class="muted">Not stated</span>` : money(r.consideration, r.currency)) },
+      { k: "programme", label: "Programme" }, { k: "filed", label: "Filed" }, { k: "link", label: "Filing link", html: (r) => link(r.link) }], `${ticker}_cessations.csv`);
+  },
+  filings(data, ticker) {
+    table($("#tabbody"), data.filings, [
+      { k: "doc_date", label: "Filed" }, { k: "heading", label: "Heading", wrap: true, text: (r) => r.heading || r.file_name || "" }, { k: "reason", label: "Reason for update", wrap: true },
+      { k: "appendix", label: "Appendix" }, { k: "filing_type", label: "Type", text: (r) => r.filing_type || r.doc_type || "" }, { k: "status", label: "Status" }, { k: "message", label: "Result", wrap: true }, { k: "source_url", label: "Filing link", html: (r) => link(r.source_url) }], `${ticker}_filings.csv`);
+  },
+  review(data, ticker) {
+    table($("#tabbody"), data.review, [
+      { k: "kind", label: "Issue" }, { k: "detail", label: "Detail", wrap: true }, { k: "heading", label: "Heading", wrap: true }, { k: "doc_date", label: "Filed" },
+      { k: "created_at", label: "Raised" }, { k: "link", label: "Filing link", html: (r) => link(r.link) }], `${ticker}_review.csv`);
+  },
+};
+
+// Dates show as MM/DD/YYYY on screen; the database keeps YYYY-MM-DD.
+function usDates(root) {
+  const fix = (n) => { if (n.parentElement && n.parentElement.closest("script,style,textarea,code")) return; if (/\d{4}-\d{2}-\d{2}/.test(n.nodeValue)) n.nodeValue = usDate(n.nodeValue); };
+  if (root.nodeType === 3) return fix(root);
+  const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for (let n = walk.nextNode(); n; n = walk.nextNode()) fix(n);
+}
+new MutationObserver((changes) => changes.forEach((c) => (c.type === "characterData" ? usDates(c.target) : c.addedNodes.forEach(usDates)))).observe(document.body, { childList: true, subtree: true, characterData: true });
+</script>
+</body>
+</html>

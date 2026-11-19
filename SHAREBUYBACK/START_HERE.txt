@@ -1,0 +1,59 @@
+SHARE BUYBACK INSIGHT: moving to another PC
+
+1. Check the rules first
+   Ask whoever manages your company's news feed, or your compliance team, whether this may be stored on the corporate network.
+   The app saves no filings: only their figures, the wording they came from, and their links.
+
+2. Unzip
+   Unzip to a folder on the PC, for example C:\SHAREBUYBACK. Keep the folders together.
+   One person at a time should run it, ideally from a local folder: its database doesn't suit several users at once.
+
+3. Install what it needs (once)
+   You need Python 3. It was tested on Python 3.14.
+   Open a Command Prompt in the folder and run:
+
+       python -m pip install --user --no-index --find-links wheels -r requirements.txt
+
+   If that fails, try:  python -m pip install --user -r requirements.txt
+
+4. Open the app
+
+       python run_app.py
+
+   Your browser opens at http://127.0.0.1:8770. Keep the window open while you use it. Only that PC can reach it.
+   If the port is busy:  python run_app.py --port 8771
+
+5. Read filings from your list
+   In the app, go to Add data. Then either:
+   - Paste a hyperlink: paste the full link and press Read. Or:
+   - Copy templates\filings_list.xlsx, fill in Ticker and Hyperlink (the document ID, or a full link),
+     and press Choose Excel file. Progress shows how many are done and how many are left.
+   Dates come from each document.
+   To test first without keeping anything, run:
+
+       python fetch_from_list.py yourlist.xlsx --probe 3
+
+   Exchange sites are always refused.
+
+6. The Tracker section
+   Open Tracker in the app and choose an exchange at the top of the page. It lists that exchange's buyback programmes one by one,
+   with every filing tied to its programme, a confidence for each filing, and a cross-check against the filings' own running totals.
+   It is worked out from the filings already read. It fetches nothing and needs no key or extra package.
+
+7. Hong Kong and the first start of v22 (use v22 2 or later for Hong Kong)
+   Hong Kong (HK) is in the list of exchanges. Its daily report is an Excel file read by link; an old .xls file needs  python -m pip install --user xlrd  (or save it as .xlsx).
+   The first time this version starts it saves a copy of your database in the backups folder, then reads your saved filings again as every version does.
+   Copy your own buyback.db into the new folder before the first start.
+
+8. Sharing with your team (read-only)
+   Never put buyback.db itself in OneDrive or a shared drive for others to open. Publish a copy instead:
+
+       python -P maintain.py publish "<shared folder>"
+
+   Each team member unzips the app on their own PC and runs:
+
+       python -P run_app.py --read-only "<shared folder>"
+
+   They see everything and can change nothing. Publish again after you add filings.
+
+More detail is in README_app.md, also under Library in the app.

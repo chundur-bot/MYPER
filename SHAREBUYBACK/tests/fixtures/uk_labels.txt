@@ -1,0 +1,9 @@
+Test fixture
+Shell plc
+5 March 2026
+Transaction in Own Shares
+Date of purchase: 4 March 2026
+Number of ordinary shares purchased: 120,000
+Highest price paid per share (pence): 2,810.50
+Lowest price paid per share (pence): 2,790.00
+Volume weighted average price paid per share (pence): 2,801.25
